@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Condensed:wght@500&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.header-row {
+  margin-top: "2rem";
+  margin-left: "2rem";
+  width: "100%";
+}
+.shortlocation {
+  padding-left: "20px";
+  padding-right: "40px";
+}
+.longlocation {
+  padding-left: "20px";
+  padding-right: "40px";
+  width: "150px";
+}

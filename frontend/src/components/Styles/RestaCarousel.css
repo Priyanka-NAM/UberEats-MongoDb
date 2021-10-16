@@ -1,0 +1,16 @@
+.select-restaur {
+  height: 500vh;
+  padding-top: 30px;
+  width: 80%;
+  margin-top: 10px;
+}
+.restaur-row {
+  display: flex;
+  /* flex-direction: row; */
+
+  padding: 20px;
+}
+.select-restaur h2 {
+  font-weight: bold;
+  padding-left: 30px;
+}

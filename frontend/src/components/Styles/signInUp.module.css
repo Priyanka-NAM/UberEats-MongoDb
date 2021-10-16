@@ -1,0 +1,55 @@
+body {
+  font-family: UberMoveText-Regular;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 32px;
+  width: auto;
+  max-width: inherit;
+}
+
+.items {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+img {
+  width: 194px;
+  height: 32px;
+}
+h4,
+h5 {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: bold;
+  font-family: UberMoveText-Medium, Helvetica, sans-serif;
+  margin-bottom: 36px;
+  text-align: left;
+}
+.signinform {
+  margin-top: 60px;
+}
+
+.buttondiv {
+  color: #3b911e;
+}
+
+.formgroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+  align-items: center;
+}
+
+.label {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 8px;
+  font-weight: inherit;
+  display: block;
+}

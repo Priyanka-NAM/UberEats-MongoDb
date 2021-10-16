@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500&display=swap");
+
+.restaName {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 40px;
+  letter-spacing: "0.06em";
+}
+.subtitle {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: "0.06em";
+}
+.addressdetails {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: "0.06em";
+  padding-bottom: 0%;
+  margin-bottom: 0%;
+}
+.detailsadd {
+  padding-top: 0%;
+  margin-top: 0%;
+  color: grey;
+  font-size: 16px;
+}
+.locationIcon {
+  padding-bottom: 0%;
+  margin-bottom: 0%;
+}
+.linkstyle {
+  color: black;
+  text-decoration: none;
+}
+a:hover {
+  color: black;
+  text-decoration: none;
+}
+linkstyle:hover {
+  color: black;
+  text-decoration: none;
+}
+.placeorderbtn {
+  margin-top: 10%;
+  height: 60px;
+  background-color: #05934f;
+  color: white;
+  font-size: 20px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 500;
+}
+.orderDetailsRow {
+  width: 80%;
+  padding-top: 40px;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.priceDetails {
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  padding-left: "90%";
+}

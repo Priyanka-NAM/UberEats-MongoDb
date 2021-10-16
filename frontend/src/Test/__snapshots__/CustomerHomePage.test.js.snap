@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render correctly the Landing Page component 1`] = `
+<div
+  className="imgStyle"
+>
+  <div
+    className="row"
+    fluid="true"
+  >
+    <div
+      className="nav"
+      onKeyDown={[Function]}
+      style={
+        Object {
+          "marginLeft": "2rem",
+          "marginTop": "2rem",
+          "width": "100%",
+        }
+      }
+    >
+      <div
+        className="nav-item"
+        style={
+          Object {
+            "paddingLeft": "50px",
+          }
+        }
+      >
+        <svg
+          color="black"
+          fill="currentColor"
+          height="22px"
+          onClick={[Function]}
+          stroke="currentColor"
+          strokeWidth="0"
+          style={
+            Object {
+              "color": "black",
+            }
+          }
+          viewBox="0 0 448 512"
+          width="22px"
+          xmlns="http://www.w3.org/2000/svg"
+          xs="6"
+        >
+          <path
+            d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+          />
+        </svg>
+      </div>
+      <div
+        className="nav-item"
+        style={
+          Object {
+            "paddingLeft": "20px",
+          }
+        }
+      >
+        <img
+          alt="Uber Eats Home"
+          src="https://d3i4yxtzktqr9n.cloudfront.net/web-eats-v2/ee037401cb5d31b23cf780808ee4ec1f.svg"
+          style={
+            Object {
+              "paddingLeft": "1rem",
+            }
+          }
+        />
+      </div>
+      <div
+        className="nav-item"
+        style={
+          Object {
+            "paddingLeft": "70%",
+          }
+        }
+      >
+        <a
+          href="/signin"
+          onClick={[Function]}
+        >
+          <button
+            className="btn btn-light"
+            disabled={false}
+            style={
+              Object {
+                "backgroundColor": "white",
+                "borderRadius": "40px",
+                "fontFamily": "UberMoveText, sans-serif",
+                "fontSize": "20px",
+                "fontWeight": "500",
+                "height": "60px",
+                "width": "150%",
+              }
+            }
+            type="button"
+          >
+            Sign in
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      style={
+        Object {
+          "backfaceVisibility": "hidden",
+          "backgroundColor": "white",
+          "height": "100%",
+          "left": "-250px",
+          "position": "fixed",
+          "right": "auto",
+          "top": "0px",
+          "transform": "translate(-250px, 0px)",
+          "transitionDuration": "1000ms",
+          "width": "15%",
+          "zIndex": "1000",
+        }
+      }
+    >
+      <div
+        className="row"
+        style={
+          Object {
+            "marginLeft": "50%",
+            "marginTop": "5%",
+          }
+        }
+      >
+        <svg
+          fill="currentColor"
+          height="35px"
+          onClick={[Function]}
+          stroke="currentColor"
+          strokeWidth="0"
+          style={
+            Object {
+              "color": "black",
+            }
+          }
+          viewBox="0 0 24 24"
+          width="35px"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16.192 6.344L11.949 10.586 7.707 6.344 6.293 7.758 10.535 12 6.293 16.242 7.707 17.656 11.949 13.414 16.192 17.656 17.606 16.242 13.364 12 17.606 7.758z"
+          />
+        </svg>
+      </div>
+      <div
+        align="left"
+        className="container"
+        style={
+          Object {
+            "marginLeft": "15px",
+          }
+        }
+      >
+        <div
+          className="row"
+          style={
+            Object {
+              "marginTop": "20%",
+            }
+          }
+        >
+          <a
+            href="/owner/signup"
+            onClick={[Function]}
+            style={
+              Object {
+                "color": "black",
+                "fontSize": "22px",
+                "fontWeight": "500",
+                "fontfamily": "UberMoveText, sans-serif",
+                "letterSpacing": "0.05em",
+                "textDecoration": "none",
+              }
+            }
+          >
+            Add your Restaurant
+          </a>
+        </div>
+        <div
+          className="row"
+          style={
+            Object {
+              "marginTop": "10%",
+            }
+          }
+        >
+          <a
+            href="/customer/signup"
+            onClick={[Function]}
+            style={
+              Object {
+                "color": "black",
+                "fontSize": "22px",
+                "fontWeight": "500",
+                "fontfamily": "UberMoveText, sans-serif",
+                "letterSpacing": "0.05em",
+                "textDecoration": "none",
+              }
+            }
+          >
+            Sign up to order
+          </a>
+        </div>
+        <div
+          className="row"
+          style={
+            Object {
+              "marginTop": "15%",
+            }
+          }
+        >
+          <a
+            href="/signin"
+            onClick={[Function]}
+          >
+            <button
+              className="btn btn-dark"
+              disabled={false}
+              onClick={[Function]}
+              style={
+                Object {
+                  "fontSize": "22px",
+                  "fontWeight": "500",
+                  "fontfamily": "UberMoveText, sans-serif",
+                  "height": "60px",
+                  "letterSpacing": "0.05em",
+                  "width": "60%",
+                }
+              }
+              type="button"
+            >
+              Sign In
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders three <SignIn /> components 1`] = `
+<Router
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "pathname": "/",
+        "search": "",
+        "state": undefined,
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+>
+  <Connect(SignIn) />
+</Router>
+`;
