@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const cors = require("cors");
 const path = require("path");
+const connection = require("./Utils/connection");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

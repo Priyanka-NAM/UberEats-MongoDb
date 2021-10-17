@@ -19,7 +19,7 @@ app.listen(port, () => {
 });
 
 app.use("/ubereats/signin", signin);
-app.use("/ubereats/signup", signup);
+// app.use("/ubereats/signup", signup);
 
 app.use("/public", express.static(path.join(__dirname, "/public")));
 app.use(
@@ -29,10 +29,10 @@ app.use(
 
 app.use(verifyToken);
 app.use("/ubereats/upload", upload);
-app.use("/ubereats/profile", profile);
+// app.use("/ubereats/profile", profile);
 app.use("/ubereats/orders", orders);
-app.use("/ubereats/dishes", dishes);
-app.use("/ubereats/customerrestaurant", customerrestaurant);
+// app.use("/ubereats/dishes", dishes);
+// app.use("/ubereats/customerrestaurant", customerrestaurant);
 app.use("/ubereats/owner", owner);
 
 module.exports = app;

@@ -7,9 +7,6 @@ const mongoDB = config.mongoURI;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
-  poolSize: 500,
-  bufferMaxEntries: 0,
 };
 
 mongoose.connect(mongoDB, options, (err, res) => {

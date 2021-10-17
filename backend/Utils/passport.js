@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable prefer-destructuring */
 const JwtStrategy = require("passport-jwt").Strategy;
@@ -10,13 +11,13 @@ const Model = require("./connection");
 // Setup work and export for the JWT passport strategy
 function auth() {
   const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("x-auth-token"),
     secretOrKey: secret,
   };
   passport.use(
     new JwtStrategy(opts, (jwtPayload, callback) => {
       const userID = jwtPayload._id;
-      Model.findById(userID, (err, results) => {
+      Model.CustomerDetails.findById(userID, (err, results) => {
         if (err) {
           return callback(err, false);
         }
@@ -31,4 +32,4 @@ function auth() {
 }
 
 exports.auth = auth;
-exports.checkAuth = passport.authenticate("jwt", { session: false });
+exports.checkAuth = passport.authenticate("x-auth-token", { session: false });

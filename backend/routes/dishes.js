@@ -1,148 +1,98 @@
-const express = require("express");
+const jwt = require("jsonwebtoken");
+const md5 = require("md5");
+const app = require("../app");
 
-const db = require("../Utils/connection");
+const { secret } = require("../Utils/config");
+const { RestaurantDetails, Dishes } = require("../Models/Models");
 
-const router = express.Router();
-
-router.post("/updatedish", (req, res) => {
-  console.log("Request of Dish Update ", req);
-  console.log("Request Body of Dish Update ", req.body);
-  const {
-    dishId,
-    restaurentId,
-    dishname,
-    dishdescription,
-    imageFilePath,
-    dishcategory,
-    dishtype,
-    ingredients,
-    price,
-    isActive,
-  } = req.body;
-  const sql = `CALL dishes_update("${dishname}",${dishId},"${dishdescription}","${ingredients}","${price}","${imageFilePath}","${dishcategory}",null,"${dishtype}",${restaurentId},null,null,${isActive});`;
-  console.log(sql);
-  db.query(sql, (err, result, fields) => {
-    try {
-      if (err) {
-        throw err;
-      }
-      if (!result || result.length === 0) {
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.send({
-          status: "Result from Db Undefined",
-        });
-        return;
-      }
-
-      if (
-        result[0].length > 0 &&
-        result[0][0].status === "DISH_UPDATE_FAILURE"
-      ) {
-        res.status(400).send({ status: "DISH_UPDATE_FAILURE" });
-        return;
-      }
-      res.send({
-        status: "DISH_UPDATED",
-        allDishes: result[0],
-      });
-    } catch (error) {
-      res.writeHead(500, {
-        "Content-Type": "text/plain",
-      });
-      res.end(JSON.stringify(error));
-    }
+app.post("/ubereats/dishes/adddish", (req, res) => {
+  const newDish = new Dishes({
+    restaurant_id: req.body.restaurentId,
+    dishname: req.body.dishname,
+    dishdescription: req.body.dishdescription,
+    image_file_path: req.body.imageFilePath,
+    dishcategory: req.body.dishcategory,
+    dishtype: req.body.dishtype,
+    ingredients: req.body.ingredients,
+    price: req.body.price,
+    isActive: "true",
   });
-});
 
-router.post("/adddish", (req, res) => {
-  console.log("Request of Add Update ", req);
-  console.log("Request Body of Add Update ", req.body);
-  const {
-    restaurentId,
-    dishname,
-    dishdescription,
-    imageFilePath,
-    dishcategory,
-    dishtype,
-    ingredients,
-    price,
-  } = req.body;
-  const sql = `CALL dishes_put("${dishname}","${dishdescription}","${ingredients}","${price}","${imageFilePath}","${dishcategory}","","${dishtype}",${restaurentId},"","","1");`;
-  console.log(sql);
-  db.query(sql, (err, result, fields) => {
-    try {
-      if (err) {
-        throw err;
-      }
-      if (!result || result.length === 0) {
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.send({
-          status: "Result from Db Undefined",
-        });
-        return;
-      }
-
-      if (result[0].length > 0 && result[0][0].status === "DISH_EXISTS") {
-        res.status(400).send({ status: "DISH_EXISTS" });
-        return;
-      }
-      res.send({
-        status: "DISH_ADDED",
-        allDishes: result[0],
-      });
-    } catch (error) {
-      res.writeHead(500, {
-        "Content-Type": "text/plain",
-      });
-      res.end(JSON.stringify(error));
-    }
-  });
-});
-
-router.get("/alldishes/:restaurant_id", (req, res) => {
-  const sql = `CALL dishes_get_restaurant(${req.params.restaurant_id});`;
-  console.log(sql);
-
-  db.query(sql, (error, result) => {
-    try {
+  Dishes.findOne(
+    { restaurant_id: req.body.restaurentId, dishname: req.body.dishname },
+    (error, result) => {
       if (error) {
-        throw error;
-      }
-      if (!result || result.length === 0) {
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.send({
-          status: "Result from Db Undefined",
-        });
+        res.status(400).send({ status: "Internal server error" });
         return;
       }
-
-      if (
-        result[0].length > 0 &&
-        result[0][0].status === "DISHES_WITH_RESTAURANT_ID_NULL_NOT_FOUND"
-      ) {
-        res.status(400).send({
-          status: "DISHES_WITH_RESTAURANT_ID_NULL_NOT_FOUND",
+      if (result) {
+        res.status(400).send({ status: "DISH_EXISTS" });
+      } else {
+        newDish.save((err, data) => {
+          if (err) {
+            res.status(400).send({ status: "DISH_COULDNOT_BE_ADDED" });
+          } else {
+            res.send({
+              status: "DISH_ADDED",
+              allDishes: data,
+            });
+          }
         });
-        return;
       }
-
-      res.send({
-        status: "ALL_DISHES",
-        allDishes: result[0],
-      });
-    } catch (err) {
-      res.writeHead(500, {
-        "Content-Type": "text/plain",
-      });
-      res.end(JSON.stringify(err));
     }
-  });
+  );
 });
 
-module.exports = router;
+app.post("/ubereats/dishes/updatedish", (req, res) => {
+  const DishUpdate = {
+    $set: {
+      dishId: req.body.dishId,
+      restaurant_id: req.body.restaurentId,
+      dishname: req.body.dishname,
+      dishdescription: req.body.dishdescription,
+      image_file_path: req.body.imageFilePath,
+      dishcategory: req.body.dishcategory,
+      dishtype: req.body.dishtype,
+      price: req.body.price,
+      ingredients: req.body.ingredients,
+      isActive: req.body.isActive,
+    },
+  };
+  Dishes.updateOne(
+    { _id: req.body.dishId, restaurant_id: req.body.restaurentId },
+    DishUpdate,
+    (error, result) => {
+      if (error) {
+        console.log("Error in dish Update ", error);
+        res.status(400).send({ status: "NO_DISH_ID" });
+        return;
+      }
+      Dishes.findOne({ _id: req.body.dishId }, (err, dishdata) => {
+        if (err) {
+          console.log("Error in dish Update ", error);
+          res.status(400).send({ status: "CANNOT_GET_UPDATED_DISH_DETAILS" });
+          return;
+        }
+        res.send({
+          status: "DISH_UPDATED",
+          allDishes: dishdata,
+        });
+      });
+    }
+  );
+});
+
+app.get("/ubereats/dishes/updatedish/:restaurant_id", (req, res) => {
+  Dishes.find({ restaurant_id: req.params.restaurant_id }, (err, dishes) => {
+    if (err) {
+      res
+        .status(400)
+        .send({ status: "DISHES_WITH_RESTAURANT_ID_NULL_NOT_FOUND" });
+      return;
+    }
+    res.send({
+      status: "ALL_DISHES",
+      allDishes: dishes,
+    });
+  });
+});
