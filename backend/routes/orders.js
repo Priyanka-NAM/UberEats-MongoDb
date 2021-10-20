@@ -2,14 +2,12 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-param-reassign */
 /* eslint-disable arrow-body-style */
-const express = require("express");
-const util = require("util");
-const Promise = require("promise");
-const configure = require("config");
-require("dotenv").config();
-const db = require("../Utils/connection");
-
-const router = express.Router();
+// const express = require("express");
+// const util = require("util");
+// const Promise = require("promise");
+// const configure = require("config");
+// require("dotenv").config();
+// const db = require("../Utils/connection");
 
 const dishDetails = (order) => {
   return {
@@ -353,4 +351,80 @@ router.post("/customer/neworder", (req, res) => {
   });
 });
 
-module.exports = router;
+const jwt = require("jsonwebtoken");
+const md5 = require("md5");
+const app = require("../app");
+
+const { secret } = require("../Utils/config");
+const {
+  CustomerDetails,
+  OrderDetails,
+  RestaurantDetails,
+} = require("../Models/Models");
+
+app.get(
+  "/ubereats/orders/completedorders/restaurant/:restaurant_id",
+  (req, res) => {
+    OrderDetails.find(
+      { restaurant_id: req.params.restaurant_id, order_status: "Completed" },
+      (err, data) => {
+        if (err) {
+          res.status(400).send({ status: "NO_RESTAURANT_ID" });
+          return;
+        }
+        res.send({
+          status: "COMPLETED_ORDERS",
+          orders: orderProcessing(data),
+        });
+      }
+    );
+  }
+);
+
+app.get("/ubereats/orders/neworders/restaurant/:restaurant_id", (req, res) => {
+  OrderDetails.find(
+    { restaurant_id: req.params.restaurant_id, order_status: "Active" },
+    (err, data) => {
+      if (err) {
+        res.status(400).send({ status: "NO_RESTAURANT_ID" });
+        return;
+      }
+      res.send({
+        status: "NEW_ORDERS",
+        orders: orderProcessing(data),
+      });
+    }
+  );
+});
+
+app.get(
+  "/ubereats/orders/cancelledorders/restaurant/:restaurant_id",
+  (req, res) => {
+    OrderDetails.find(
+      { restaurant_id: req.params.restaurant_id, order_status: "Cancelled" },
+      (err, data) => {
+        if (err) {
+          res.status(400).send({ status: "NO_RESTAURANT_ID" });
+          return;
+        }
+        res.send({
+          status: "CANCELLED_ORDERS",
+          orders: orderProcessing(data),
+        });
+      }
+    );
+  }
+);
+
+app.get("/ubereats/orders/orderstatus/customer/:customer_id", (req, res) => {
+  OrderDetails.find({ customer_id: req.params.customer_id }, (err, data) => {
+    if (err) {
+      res.status(400).send({ status: "CUSTOMER_ID_NULL" });
+      return;
+    }
+    res.send({
+      status: "CUSTOMER_ORDERS",
+      orders: orderProcessing(data),
+    });
+  });
+});

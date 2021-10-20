@@ -43,11 +43,11 @@ const CustomerDetails = new Schema({
   profile_pic_file_path: {
     type: String,
   },
-  OrderDetails: { type: Array },
+  OrderDetails: [{ type: mongoose.Schema.Types.ObjectId, ref: "OrderDetails" }],
   favorite_restaurants: { type: Array },
 });
 
-const OrderDetails = new Schema({
+const OrderDetails = new Schema({  
   order_status: {
     type: String,
   },
@@ -91,23 +91,9 @@ const OrderDetails = new Schema({
   },
   customer_id: { type: Schema.Types.ObjectId, ref: "CustomerDetails" },
   restaurant_id: { type: Schema.Types.ObjectId, ref: "RestaurantDetails" },
-  OrderItems: { type: Array },
-});
-
-const OrderItems = new Schema({
-  dish_id: {
-    type: Schema.Types.ObjectId,
-    ref: "Dishes",
-  },
-  quantity: {
-    type: Number,
-  },
-  price: {
-    type: Number,
-  },
-  create_time: { type: Date, default: Date.now() },
-  update_time: { type: Date, default: Date.now() },
-  order_id: { type: Schema.Types.ObjectId, ref: "OrderDetails" },
+  cart_items: [
+    { dish_id: String, dish_name: String, quantity: Number, price: Number },
+  ],
 });
 
 const RestaurantDetails = new Schema({
@@ -210,9 +196,8 @@ const Dishes = new Schema({
 });
 
 module.exports = {
-  CustomerDetails: model("CustomerDetail", CustomerDetails),
-  OrderDetails: model("OrderDetail", OrderDetails),
-  OrderItems: model("OrderItem", OrderItems),
-  RestaurantDetails: model("RestaurantDetail", RestaurantDetails),
-  Dishes: model("Dishe", Dishes),
+  CustomerDetails: model("CustomerDetails", CustomerDetails),
+  OrderDetails: model("OrderDetails", OrderDetails),
+  RestaurantDetails: model("RestaurantDetails", RestaurantDetails),
+  Dishes: model("Dishes", Dishes),
 };

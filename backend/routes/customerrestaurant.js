@@ -213,7 +213,7 @@ app.get("/ubereats/customerrestaurant/allrestaurants", (req, res) => {
 app.get(
   "/ubereats/customerrestaurant/restaurantdetails/:restaurent_id",
   (req, res) => {
-    RestaurantDetails.find(
+    RestaurantDetails.findOne(
       { _id: req.params.restaurant_id },
       (err, restaurantdata) => {
         if (err) {
@@ -231,7 +231,7 @@ app.get(
 
 app.get("/ubereats/customerrestaurant/favourite/:customer_id", (req, res) => {
   CustomerDetails.find(
-    { _id: req.params.restaurant_id },
+    { _id: req.params.customer_id },
     (err, restaurantdata) => {
       if (err) {
         res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
