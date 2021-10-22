@@ -45,7 +45,9 @@
 
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
+const passport = require("passport");
 const app = require("../app");
+const { checkAuth } = require("../Utils/passport");
 
 const { secret } = require("../Utils/config");
 const {
@@ -53,16 +55,21 @@ const {
   OrderDetails,
   RestaurantDetails,
 } = require("../Models/Models");
+// const checkAuth = passport.authenticate("jwt", { session: false });
 
-app.get("/ubereats/owner/customerdetails/:customer_id", (req, res) => {
-  CustomerDetails.findOne({ _id: req.params.customer_id }, (err, data) => {
-    if (err) {
-      res.status(400).send({ status: "CUSTOMER_DETAILS_FETCH_FAILURE" });
-      return;
-    }
-    res.send({
-      status: "CUSTOMER_DETAILS",
-      customerDetails: data,
+app.get(
+  "/ubereats/owner/customerdetails/:customer_id",
+  checkAuth,
+  (req, res) => {
+    CustomerDetails.findOne({ _id: req.params.customer_id }, (err, data) => {
+      if (err) {
+        res.status(400).send({ status: "CUSTOMER_DETAILS_FETCH_FAILURE" });
+        return;
+      }
+      res.send({
+        status: "CUSTOMER_DETAILS",
+        customerDetails: data,
+      });
     });
-  });
-});
+  }
+);

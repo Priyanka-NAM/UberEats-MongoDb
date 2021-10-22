@@ -7,6 +7,7 @@ const session = require("express-session");
 const cors = require("cors");
 const path = require("path");
 const connection = require("./Utils/connection");
+const passport = require("passport");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -45,5 +46,7 @@ app.use((res, req, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
+
+app.use(passport.initialize());
 
 module.exports = app;

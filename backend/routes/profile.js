@@ -22,17 +22,23 @@
 
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
+const passport = require("passport");
 const app = require("../app");
-
+// require("../Utils/passport");
+const { checkAuth } = require("../Utils/passport");
 const { secret } = require("../Utils/config");
 const { CustomerDetails, RestaurantDetails } = require("../Models/Models");
 
-app.post("/ubereats/profile/customer", (req, res) => {
+// const checkAuth = passport.authenticate("jwt", { session: false });
+
+// auth();
+app.post("/ubereats/profile/customer", checkAuth, (req, res) => {
   const hashedPassword = md5(req.body.password);
 
   const UserUpdate = {
     $set: {
       // customer_id: req.body.customer_id,
+      is_owner: 0,
       name: req.body.name,
       email_id: req.body.email,
       password: hashedPassword,
@@ -77,11 +83,12 @@ app.post("/ubereats/profile/customer", (req, res) => {
   );
 });
 
-app.post("/ubereats/profile/owner", (req, res) => {
+app.post("/ubereats/profile/owner", checkAuth, (req, res) => {
   const hashedPassword = md5(req.body.password);
 
   const RestaurantUpdate = {
     $set: {
+      is_owner: 1,
       name: req.body.name,
       email_id: req.body.email,
       password: hashedPassword,
@@ -130,18 +137,22 @@ app.post("/ubereats/profile/owner", (req, res) => {
   );
 });
 
-app.get("/ubereats/profile/owner/details/:restaurant_id", (req, res) => {
-  RestaurantDetails.findOne(
-    { _id: req.params.restaurant_id },
-    (err, restaurantdata) => {
-      if (err) {
-        res.status(400).send({ status: "OWNER_PROFILE_DETAILS_FAILURE" });
-        return;
+app.get(
+  "/ubereats/profile/owner/details/:restaurant_id",
+  checkAuth,
+  (req, res) => {
+    RestaurantDetails.findOne(
+      { _id: req.params.restaurant_id },
+      (err, restaurantdata) => {
+        if (err) {
+          res.status(400).send({ status: "OWNER_PROFILE_DETAILS_FAILURE" });
+          return;
+        }
+        res.send({
+          status: "OWNER_PROFILE_DETAILS",
+          user: restaurantdata,
+        });
       }
-      res.send({
-        status: "OWNER_PROFILE_DETAILS",
-        user: restaurantdata,
-      });
-    }
-  );
-});
+    );
+  }
+);

@@ -125,7 +125,10 @@ class OwnerProfile extends Component {
 
     let errorMessage = "";
     let message = "";
-    if (UpdatedStatus === "OWNER_PROFILE_DETAILS") {
+    if (
+      UpdatedStatus === "OWNER_PROFILE_DETAILS" ||
+      UpdatedStatus === "RESTAURANT_ADDED"
+    ) {
       message = "";
     } else if (UpdatedStatus === "RESTAURANT_UPDATED") {
       message = "Restaurant Details updated";
@@ -451,62 +454,6 @@ class OwnerProfile extends Component {
                   </Form.Select>
                 </Col>
               </Row>
-              {/* <h4 style={{ fontSize: "25px", fontFamily: "sans-serif" }}>
-                Working Days
-              </h4>
-              <Form>
-                <Row>
-                  <Col xs={2}>
-                    <Form.Label>Working Days</Form.Label>
-                  </Col>
-                  <Col
-                    xs={6}
-                    style={{ fontSize: "16px", fontFamily: "sans-serif" }}>
-                    <Form.Check
-                      inline
-                      label='Sun'
-                      name='sun'
-                      changeHandler={this.handleChange}
-                    />
-                    <Form.Check
-                      inline
-                      label='Mon'
-                      name='mon'
-                      changeHandler={this.handleChange}
-                    />
-                    <Form.Check
-                      inline
-                      label='Tue'
-                      name='tue'
-                      changeHandler={this.handleChange}
-                    />
-                    <Form.Check
-                      inline
-                      label='Wed'
-                      name='wed'
-                      changeHandler={this.handleChange}
-                    />
-                    <Form.Check
-                      inline
-                      label='Thr'
-                      name='thr'
-                      changeHandler={this.handleChange}
-                    />
-                    <Form.Check
-                      inline
-                      label='Fri'
-                      name='fri'
-                      changeHandler={this.handleChange}
-                    />
-                    <Form.Check
-                      inline
-                      label='Sat'
-                      name='sat'
-                      changeHandler={this.handleChange}
-                    />
-                  </Col>
-                </Row>
-              </Form> */}
               <br />
               <br />
               <Row>

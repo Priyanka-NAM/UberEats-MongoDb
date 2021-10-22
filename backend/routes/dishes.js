@@ -1,11 +1,15 @@
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
+const passport = require("passport");
+
 const app = require("../app");
 
 const { secret } = require("../Utils/config");
 const { RestaurantDetails, Dishes } = require("../Models/Models");
+const { checkAuth } = require("../Utils/passport");
 
-app.post("/ubereats/dishes/adddish", (req, res) => {
+// const checkAuth = passport.authenticate("jwt", { session: false });
+app.post("/ubereats/dishes/adddish", checkAuth, (req, res) => {
   const newDish = new Dishes({
     restaurant_id: req.body.restaurentId,
     dishname: req.body.dishname,
@@ -43,7 +47,7 @@ app.post("/ubereats/dishes/adddish", (req, res) => {
   );
 });
 
-app.post("/ubereats/dishes/updatedish", (req, res) => {
+app.post("/ubereats/dishes/updatedish", checkAuth, (req, res) => {
   const DishUpdate = {
     $set: {
       dishId: req.body.dishId,
@@ -82,7 +86,7 @@ app.post("/ubereats/dishes/updatedish", (req, res) => {
   );
 });
 
-app.get("/ubereats/dishes/updatedish/:restaurant_id", (req, res) => {
+app.get("/ubereats/dishes/updatedish/:restaurant_id", checkAuth, (req, res) => {
   Dishes.find({ restaurant_id: req.params.restaurant_id }, (err, dishes) => {
     if (err) {
       res

@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const CustomerDetails = new Schema({
+  is_owner: {
+    type: Number,
+  },
   name: {
     type: String,
     required: true,
@@ -47,7 +50,7 @@ const CustomerDetails = new Schema({
   favorite_restaurants: { type: Array },
 });
 
-const OrderDetails = new Schema({  
+const OrderDetails = new Schema({
   order_status: {
     type: String,
   },
@@ -97,6 +100,9 @@ const OrderDetails = new Schema({
 });
 
 const RestaurantDetails = new Schema({
+  is_owner: {
+    type: Number,
+  },
   name: {
     type: String,
     required: true,

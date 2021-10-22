@@ -192,26 +192,32 @@
 
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
-const app = require("../app");
 
+const app = require("../app");
+const { checkAuth } = require("../Utils/passport");
 const { secret } = require("../Utils/config");
 const { CustomerDetails, RestaurantDetails } = require("../Models/Models");
 
-app.get("/ubereats/customerrestaurant/allrestaurants", (req, res) => {
-  RestaurantDetails.find({}, (err, restaurantsdata) => {
-    if (err) {
-      res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
-      return;
-    }
-    res.send({
-      status: "ALL_RESTAURANTS",
-      allRestaurants: restaurantsdata,
+app.get(
+  "/ubereats/customerrestaurant/allrestaurants",
+  checkAuth,
+  (req, res) => {
+    RestaurantDetails.find({}, (err, restaurantsdata) => {
+      if (err) {
+        res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
+        return;
+      }
+      res.send({
+        status: "ALL_RESTAURANTS",
+        allRestaurants: restaurantsdata,
+      });
     });
-  });
-});
+  }
+);
 
 app.get(
   "/ubereats/customerrestaurant/restaurantdetails/:restaurent_id",
+  checkAuth,
   (req, res) => {
     RestaurantDetails.findOne(
       { _id: req.params.restaurant_id },
@@ -229,18 +235,22 @@ app.get(
   }
 );
 
-app.get("/ubereats/customerrestaurant/favourite/:customer_id", (req, res) => {
-  CustomerDetails.find(
-    { _id: req.params.customer_id },
-    (err, restaurantdata) => {
-      if (err) {
-        res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
-        return;
+app.get(
+  "/ubereats/customerrestaurant/favourite/:customer_id",
+  checkAuth,
+  (req, res) => {
+    CustomerDetails.find(
+      { _id: req.params.customer_id },
+      (err, restaurantdata) => {
+        if (err) {
+          res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
+          return;
+        }
+        res.send({
+          status: "RESTAURANT_DETAILS",
+          restaurentDetails: restaurantdata,
+        });
       }
-      res.send({
-        status: "RESTAURANT_DETAILS",
-        restaurentDetails: restaurantdata,
-      });
-    }
-  );
-});
+    );
+  }
+);

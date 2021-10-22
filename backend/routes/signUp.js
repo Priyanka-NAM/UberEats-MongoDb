@@ -9,6 +9,7 @@ app.post("/ubereats/signup/customer", (req, res) => {
   const hashedPassword = md5(req.body.password);
 
   const newUser = new CustomerDetails({
+    is_owner: 0,
     name: req.body.name,
     email_id: req.body.email,
     password: hashedPassword,
@@ -37,7 +38,6 @@ app.post("/ubereats/signup/customer", (req, res) => {
           res.end();
         } else {
           const token = jwt.sign({ _id: data }, secret);
-          jwt.verify(token, secret);
           res.header("x-auth-token", token).send({
             status: "USER_ADDED",
             user: data,
@@ -53,6 +53,7 @@ app.post("/ubereats/signup/owner", (req, res) => {
   const hashedPassword = md5(req.body.password);
 
   const newUser = new RestaurantDetails({
+    is_owner: 1,
     name: req.body.name,
     email_id: req.body.email,
     password: hashedPassword,
