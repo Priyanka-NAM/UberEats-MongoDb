@@ -58,7 +58,8 @@ class OwnerHomePage extends Component {
     let otherDetails = null;
     let description = null;
     if (ownerDetails) {
-      src = `${backendServer}/public/${ownerDetails.image_file_path}`;
+      // src = `${backendServer}/public/${ownerDetails.image_file_path}`;
+      src = `${ownerDetails.image_file_path}`;
       restaTitle = ownerDetails.name;
       restaAddress = `(${ownerDetails.restaurant_address_line_one})`;
       otherDetails = `Ph -${ownerDetails.phone_num}  • Timings ${ownerDetails.restaurant_start_time} - ${ownerDetails.restaurant_end_time}`;

@@ -100,7 +100,8 @@ class RestaurentHome extends Component {
       ));
     }
     if (restaurentDetails) {
-      const src = `${backendServer}/public/${restaurentDetails.image_file_path}`;
+      // const src = `${backendServer}/public/${restaurentDetails.image_file_path}`;
+      const src = `${restaurentDetails.image_file_path}`;
       restaurentBanner = (
         <RestaBanner
           key={restaurentDetails.restaurant_id}

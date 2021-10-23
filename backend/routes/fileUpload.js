@@ -29,7 +29,7 @@ app.post(
   async (req, res, next) => {
     upload(req, res, (err) => {
       if (!err) {
-        res.end(res.json({ image: req.file }));
+        res.end(req.file.path);
       } else {
         console.log("Error!");
       }
@@ -43,7 +43,7 @@ app.post(
   async (req, res, next) => {
     upload(req, res, (err) => {
       if (!err) {
-        res.end(res.json({ image: req.file }));
+        res.end(req.file.path);
       } else {
         console.log("Error!");
       }

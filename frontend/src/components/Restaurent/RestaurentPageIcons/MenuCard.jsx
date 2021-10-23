@@ -65,6 +65,7 @@ class MenuCard extends Component {
       DeliveryMode: restaurantDeliveryType,
       itemDetails: {
         title: title,
+        // TODO(Priyanka): Need to update price as price * Orderquantity
         price: price,
         quantity: Orderquantity,
         dishDetails: dishDetails,
@@ -125,7 +126,8 @@ class MenuCard extends Component {
 
     let ItemPrice = Orderquantity * price;
     ItemPrice = ItemPrice.toFixed(2);
-    const srcModified = `${backendServer}/public/${src}`;
+    // const srcModified = `${backendServer}/public/${src}`;
+    const srcModified = `${src}`;
     return (
       <>
         <div

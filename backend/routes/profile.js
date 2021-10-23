@@ -73,9 +73,12 @@ app.post("/ubereats/profile/customer", checkAuth, (req, res) => {
               .send({ status: "CANNOT_GET_UPDATED_CUSTOMER_DETAILS" });
             return;
           }
+          let modifiedCustomerData = JSON.parse(JSON.stringify(customerdata));
+          modifiedCustomerData.customer_id = customerdata._id;
+          // customerdata.customer_id = customerdata._id;
           res.send({
             status: "CUSTOMER_UPDATED",
-            user: customerdata,
+            user: modifiedCustomerData,
           });
         }
       );
@@ -127,9 +130,11 @@ app.post("/ubereats/profile/owner", checkAuth, (req, res) => {
               .send({ status: "CANNOT_GET_UPDATED_RESTAURANT_DETAILS" });
             return;
           }
+          let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
+          modifiedData.restaurant_id = restaurantdata._id;
           res.send({
             status: "RESTAURANT_UPDATED",
-            user: restaurantdata,
+            user: modifiedData,
           });
         }
       );
@@ -144,13 +149,15 @@ app.get(
     RestaurantDetails.findOne(
       { _id: req.params.restaurant_id },
       (err, restaurantdata) => {
-        if (err) {
+        if (err || !restaurantdata) {
           res.status(400).send({ status: "OWNER_PROFILE_DETAILS_FAILURE" });
           return;
         }
+        let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
+        modifiedData.restaurant_id = restaurantdata._id;
         res.send({
           status: "OWNER_PROFILE_DETAILS",
-          user: restaurantdata,
+          user: modifiedData,
         });
       }
     );

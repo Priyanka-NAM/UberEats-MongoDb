@@ -26,7 +26,8 @@ class OwnerMenuCard extends Component {
   render() {
     const { orderIndex, dishName, dishDescription, dishPrice, dishImage } =
       this.props;
-    const src = `${backendServer}/public/${dishImage}`;
+    // const src = `${backendServer}/public/${dishImage}`;
+    const src = `${dishImage}`;
 
     console.log("dishPrice ", dishPrice);
     return (

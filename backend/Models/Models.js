@@ -46,7 +46,7 @@ const CustomerDetails = new Schema({
   profile_pic_file_path: {
     type: String,
   },
-  OrderDetails: [{ type: mongoose.Schema.Types.ObjectId, ref: "OrderDetails" }],
+  // OrderDetails: [{ type: mongoose.Schema.Types.ObjectId, ref: "OrderDetails" }],
   favorite_restaurants: { type: Array },
 });
 
@@ -94,7 +94,7 @@ const OrderDetails = new Schema({
   },
   customer_id: { type: Schema.Types.ObjectId, ref: "CustomerDetails" },
   restaurant_id: { type: Schema.Types.ObjectId, ref: "RestaurantDetails" },
-  cart_items: [
+  dishes: [
     { dish_id: String, dish_name: String, quantity: Number, price: Number },
   ],
 });
@@ -158,18 +158,13 @@ const RestaurantDetails = new Schema({
   delivery_type: {
     type: String,
   },
-  Dishes: [
-    {
-      dishId: { type: Schema.Types.ObjectId, ref: "Dishes" },
-    },
-  ],
 });
 
 const Dishes = new Schema({
-  dishname: {
+  name: {
     type: String,
   },
-  dishdescription: {
+  description: {
     type: String,
   },
   ingredients: {
@@ -181,10 +176,13 @@ const Dishes = new Schema({
   image_file_path: {
     type: String,
   },
-  dishcategory: {
+  category: {
     type: String,
   },
-  dishtype: {
+  dish_type: {
+    type: String,
+  },
+  cuisine_type: {
     type: String,
   },
   restaurant_id: { type: Schema.Types.ObjectId, ref: "RestaurantDetails" },

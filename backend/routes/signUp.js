@@ -37,10 +37,12 @@ app.post("/ubereats/signup/customer", (req, res) => {
           });
           res.end();
         } else {
+          let modifiedData = JSON.parse(JSON.stringify(data));
+          modifiedData.customer_id = data._id;
           const token = jwt.sign({ _id: data }, secret);
           res.header("x-auth-token", token).send({
             status: "USER_ADDED",
-            user: data,
+            user: modifiedData,
             token,
           });
         }
@@ -81,11 +83,13 @@ app.post("/ubereats/signup/owner", (req, res) => {
           });
           res.end();
         } else {
+          let modifiedData = JSON.parse(JSON.stringify(data));
+          modifiedData.restaurant_id = data._id;
           const token = jwt.sign({ _id: data }, secret);
           jwt.verify(token, secret);
           res.header("x-auth-token", token).send({
             status: "RESTAURANT_ADDED",
-            user: data,
+            user: modifiedData,
             token,
           });
         }

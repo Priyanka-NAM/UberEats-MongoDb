@@ -124,7 +124,8 @@ class CustomerOrders extends Component {
       );
     }
     return filterdorders.map((order, index) => {
-      const src = `${backendServer}/public/${order.restaurant_image_file_path}`;
+      // const src = `${backendServer}/public/${order.restaurant_image_file_path}`;
+      const src = `${order.restaurant_image_file_path}`;
       const date = this.dateparse(order.create_time).toString();
 
       return (

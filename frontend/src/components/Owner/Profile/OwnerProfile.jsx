@@ -120,7 +120,8 @@ class OwnerProfile extends Component {
       showAlert,
     } = this.state;
 
-    const src = `${backendServer}/public/${image_file_path}`;
+    // const src = `${backendServer}/public/${image_file_path}`;
+    const src = `${image_file_path}`;
     const { UpdatedStatus } = this.props;
 
     let errorMessage = "";

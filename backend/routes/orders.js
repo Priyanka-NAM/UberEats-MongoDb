@@ -354,7 +354,21 @@ const {
 } = require("../Models/Models");
 
 // const checkAuth = passport.authenticate("jwt", { session: false });
-
+const addOrderIds = (orders) => {
+  // TODO(priyanka) :
+  //      oi.price as price,
+  //			o.create_time as create_time,
+  //			o.update_time as update_time,
+  //			d.name as dish_name,
+  //			c.name as customer_name,
+  //			r.name as restaurant_name,
+  //      r.image_file_path as restaurant_image_file_path
+  const modifiedOrders = orders.map((order) => {
+    let modifiedOrder = JSON.parse(JSON.stringify(order));
+    modifiedOrder.order_id = order._id;
+    return modifiedOrder;
+  });
+};
 app.get(
   "/ubereats/orders/completedorders/restaurant/:restaurant_id",
   checkAuth,
@@ -368,7 +382,7 @@ app.get(
         }
         res.send({
           status: "COMPLETED_ORDERS",
-          orders: data,
+          orders: addOrderIds(data),
         });
       }
     );
@@ -388,7 +402,7 @@ app.get(
         }
         res.send({
           status: "NEW_ORDERS",
-          orders: data,
+          orders: addOrderIds(data),
         });
       }
     );
@@ -408,7 +422,7 @@ app.get(
         }
         res.send({
           status: "CANCELLED_ORDERS",
-          orders: data,
+          orders: addOrderIds(data),
         });
       }
     );
@@ -426,13 +440,23 @@ app.get(
       }
       res.send({
         status: "CUSTOMER_ORDERS",
-        orders: orderProcessing(data),
+        orders: addOrderIds(data),
       });
     });
   }
 );
 
 app.post("/ubereats/orders/customer/neworder", checkAuth, (req, res) => {
+  let dishes = [];
+  const cart_items = req.body.cart_items;
+  for (let i = 0; i < cart_items.length; i += 1) {
+    dishes.push({
+      dish_id: cart_items[i].dishDetails.dish_id,
+      dish_name: cart_items[i].dishDetails.dishname,
+      quantity: cart_items[i].quantity,
+      price: cart_items[i].price,
+    });
+  }
   const newOrder = new OrderDetails({
     restaurant_id: req.body.restaurant_id,
     customer_id: req.body.customerId,
@@ -449,7 +473,7 @@ app.post("/ubereats/orders/customer/neworder", checkAuth, (req, res) => {
     order_state: req.body.order_state,
     order_country: req.body.order_country,
     order_zipcode: req.body.order_zipcode,
-    cart_items: req.body.cart_items,
+    dishes: dishes,
   });
   newOrder.save((err, data) => {
     if (err) {

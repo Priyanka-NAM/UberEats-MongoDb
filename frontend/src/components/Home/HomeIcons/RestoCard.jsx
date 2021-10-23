@@ -75,7 +75,8 @@ class RestoCard extends Component {
     const { restaurant } = this.props;
 
     const { liked } = this.state;
-    const srcModified = `${backendServer}/public/${restaurant.image_file_path}`;
+    // const srcModified = `${backendServer}/public/${restaurant.image_file_path}`;
+    const srcModified = `${restaurant.image_file_path}`;
 
     return (
       <>

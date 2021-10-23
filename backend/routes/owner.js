@@ -62,13 +62,15 @@ app.get(
   checkAuth,
   (req, res) => {
     CustomerDetails.findOne({ _id: req.params.customer_id }, (err, data) => {
-      if (err) {
+      if (err || !data) {
         res.status(400).send({ status: "CUSTOMER_DETAILS_FETCH_FAILURE" });
         return;
       }
+      let modifiedData = JSON.parse(JSON.stringify(data));
+      modifiedData.customer_id = data._id;
       res.send({
         status: "CUSTOMER_DETAILS",
-        customerDetails: data,
+        customerDetails: modifiedData,
       });
     });
   }

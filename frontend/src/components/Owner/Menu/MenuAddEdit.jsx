@@ -122,7 +122,8 @@ class MenuAddEdit extends Component {
       },
     };
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     axios
       .post(
         `${backendServer}/ubereats/upload/profile_upload`,
@@ -189,7 +190,8 @@ class MenuAddEdit extends Component {
       imageFilePath,
       updateStatus,
     } = this.state;
-    const src = `${backendServer}/public/${imageFilePath}`;
+    // const src = `${backendServer}/public/${imageFilePath}`;
+    const src = `${imageFilePath}`;
 
     let alertmessage = null;
     if (updateStatus === "DISH_UPDATE_SUCCESS") {

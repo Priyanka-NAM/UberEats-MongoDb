@@ -59,10 +59,12 @@ app.post("/ubereats/signin", (req, res) => {
         res.end();
       }
       if (result) {
+        let modifiedData = JSON.parse(JSON.stringify(result));
+        modifiedData.restaurant_id = result._id;
         const token = jwt.sign({ _id: result }, secret);
         res.header("x-auth-token", token).send({
           status: "Authentication Successful",
-          user: result,
+          user: modifiedData,
           token,
         });
         return;
@@ -77,10 +79,12 @@ app.post("/ubereats/signin", (req, res) => {
               res.end();
             }
             if (result) {
+              let modifiedCustomerData = JSON.parse(JSON.stringify(result));
+              modifiedCustomerData.customer_id = result._id;
               const token = jwt.sign({ _id: result }, secret);
               res.header("x-auth-token", token).send({
                 status: "Authentication Successful",
-                user: result,
+                user: modifiedCustomerData,
                 token,
               });
               return;

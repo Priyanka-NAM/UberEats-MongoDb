@@ -124,7 +124,9 @@ class CustomerProfile extends Component {
       profile_pic_file_path,
       showAlert,
     } = this.state;
-    const src = `${backendServer}/public/${profile_pic_file_path}`;
+    // const src = `${backendServer}/public/${profile_pic_file_path}`;
+    const src = `${profile_pic_file_path}`;
+
     const { UpdateStatus } = this.props;
 
     let errorMessage = "";

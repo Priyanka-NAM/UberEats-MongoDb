@@ -52,7 +52,8 @@ export const addOwner = (signupdata) => async (dispatch) => {
 export const updateOwner = (ownerUpdateData) => async (dispatch) => {
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.post(
       `${backendServer}/ubereats/profile/owner`,
       ownerUpdateData
@@ -77,7 +78,8 @@ export const ownerNewOrders = () => async (dispatch) => {
   console.log(" restaurantId: ", restaurantId);
   if (!restaurantId) return;
   axios.defaults.withCredentials = true;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
   axios
     .get(
       `${backendServer}/ubereats/orders/neworders/restaurant/${restaurantId}`
@@ -110,7 +112,8 @@ export const ownerNewOrdersUpdate =
     console.log(" restaurantId: ", restaurantId);
     if (!restaurantId) return;
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     axios
       .post(
         `${backendServer}/ubereats/orders/neworders/update`,
@@ -139,7 +142,8 @@ export const ownerDeliveredOrders = () => async (dispatch) => {
     localStorage.getItem("user")
   );
   if (!restaurantId) return;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
   axios
     .get(
       `${backendServer}/ubereats/orders/completedorders/restaurant/${restaurantId}`
@@ -171,7 +175,9 @@ export const ownerCancelledOrders = () => async (dispatch) => {
 
   console.log(" restaurantId: ", restaurantId);
   if (!restaurantId) return;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
+
   axios
     .get(
       `${backendServer}/ubereats/orders/cancelledorders/restaurant/${restaurantId}`
@@ -201,7 +207,9 @@ export const ownerMenu = () => async (dispatch) => {
   );
   console.log(" restaurantId: ", restaurantId);
   if (!restaurantId) return;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
+
   axios
     .get(`${backendServer}/ubereats/dishes/alldishes/${restaurantId}`)
     .then((response) => {
@@ -227,7 +235,9 @@ export const ownerMenu = () => async (dispatch) => {
 export const ownerMenuUpdate = (dishdata) => async (dispatch) => {
   console.log("Inside ownerMenuUpdate Action from Menu Update ", dishdata);
   axios.defaults.withCredentials = true;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
+
   axios
     .post(`${backendServer}/ubereats/dishes/updatedish`, dishdata)
     .then((response) => {
@@ -254,7 +264,9 @@ export const ownerMenuUpdate = (dishdata) => async (dispatch) => {
 
 export const ownerMenuAdd = (dishdata) => async (dispatch) => {
   axios.defaults.withCredentials = true;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
+
   axios
     .post(`${backendServer}/ubereats/dishes/adddish`, dishdata)
     .then((response) => {
@@ -280,7 +292,9 @@ export const ownerMenuAdd = (dishdata) => async (dispatch) => {
 
 export const getUserDetails = (customerId) => async (dispatch) => {
   if (!customerId) return;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
+
   axios
     .get(`${backendServer}/ubereats/owner/customerdetails/${customerId}`)
     .then((response) => {
@@ -308,7 +322,9 @@ export const getOwnerProfile = () => async (dispatch) => {
     localStorage.getItem("user")
   );
   if (!restaurantId) return;
-  axios.defaults.headers.common.authorization = getToken();
+  // axios.defaults.headers.common.authorization = getToken();
+  axios.defaults.headers.common["x-auth-token"] = getToken();
+
   axios
     .get(`${backendServer}/ubereats/profile/owner/details/${restaurantId}`)
     .then((response) => {

@@ -207,28 +207,35 @@ app.get(
         res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
         return;
       }
+      const modifiedRestaurantsData = restaurantsdata.map((restaurant) => {
+        let modifiedRestaurant = JSON.parse(JSON.stringify(restaurant));
+        modifiedRestaurant.restaurant_id = restaurant._id;
+        return modifiedRestaurant;
+      });
       res.send({
         status: "ALL_RESTAURANTS",
-        allRestaurants: restaurantsdata,
+        allRestaurants: modifiedRestaurantsData,
       });
     });
   }
 );
 
 app.get(
-  "/ubereats/customerrestaurant/restaurantdetails/:restaurent_id",
+  "/ubereats/customerrestaurant/restaurantdetails/:restaurant_id",
   checkAuth,
   (req, res) => {
     RestaurantDetails.findOne(
       { _id: req.params.restaurant_id },
       (err, restaurantdata) => {
-        if (err) {
+        if (err || !restaurantdata) {
           res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
           return;
         }
+        let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
+        modifiedData.restaurant_id = restaurantdata._id;
         res.send({
           status: "RESTAURANT_DETAILS",
-          restaurentDetails: restaurantdata,
+          restaurentDetails: modifiedData,
         });
       }
     );

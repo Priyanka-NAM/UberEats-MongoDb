@@ -43,7 +43,7 @@ export const addCustomer = (signupdata) => async (dispatch) => {
 export const updateCustomer = (customerUpdateData) => async (dispatch) => {
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.post(
       `${backendServer}/ubereats/profile/customer`,
       customerUpdateData
@@ -66,7 +66,8 @@ export const customerOrders = () => async (dispatch) => {
   const { customer_id: customerId } = JSON.parse(localStorage.getItem("user"));
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.get(
       `${backendServer}/ubereats/orders/orderstatus/customer/${customerId}`
     );
@@ -90,7 +91,8 @@ export const customerOrderPlaced = (customerNewOrder) => async (dispatch) => {
     const postInput = { ...customerNewOrder, customerId };
     console.log("Inside Customer New Order Action");
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.post(
       `${backendServer}/ubereats/orders/customer/neworder`,
       postInput
@@ -112,7 +114,8 @@ export const customerFav = () => async (dispatch) => {
   const { customer_id: customerId } = JSON.parse(localStorage.getItem("user"));
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.get(
       `${backendServer}/ubereats/customerrestaurant/favourite/${customerId}`
     );
@@ -135,7 +138,8 @@ export const updateFav = (updateFavInput) => async (dispatch) => {
   const newFavInput = { ...updateFavInput, customerId };
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.post(
       `${backendServer}/ubereats/customerrestaurant/updatefavourite`,
       newFavInput

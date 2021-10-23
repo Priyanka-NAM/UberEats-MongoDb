@@ -6,7 +6,8 @@ import { getToken } from "../components/Service/authService";
 export const restaurants = () => async (dispatch) => {
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.get(
       `${backendServer}/ubereats/customerrestaurant/allrestaurants`
     );
@@ -27,7 +28,8 @@ export const restaurants = () => async (dispatch) => {
 export const searchRestaurants = (searchInput) => async (dispatch) => {
   try {
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
+    // axios.defaults.headers.common.authorization = getToken();
+    axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.get(
       `${backendServer}/ubereats/customerrestaurant/restaurantsearch/${searchInput}`
     );
