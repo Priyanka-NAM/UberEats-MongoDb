@@ -91,6 +91,7 @@ class RestaurentHome extends Component {
           title={dish.name}
           price={dish.price}
           currentRestaurantName={restaurentDetails.name}
+          currentRestaurantImage={restaurentDetails.image_file_path}
           restaurantDeliveryType={restaurentDetails.delivery_type}
           isOwnerHome={false}
           description={dish.description}

@@ -368,6 +368,7 @@ const addOrderIds = (orders) => {
     modifiedOrder.order_id = order._id;
     return modifiedOrder;
   });
+  return modifiedOrders;
 };
 app.get(
   "/ubereats/orders/completedorders/restaurant/:restaurant_id",
@@ -449,16 +450,20 @@ app.get(
 app.post("/ubereats/orders/customer/neworder", checkAuth, (req, res) => {
   let dishes = [];
   const cart_items = req.body.cart_items;
+  console.log(req.body);
   for (let i = 0; i < cart_items.length; i += 1) {
     dishes.push({
-      dish_id: cart_items[i].dishDetails.dish_id,
-      dish_name: cart_items[i].dishDetails.dishname,
+      dish_id: cart_items[i].dish_id,
+      dish_name: cart_items[i].title,
       quantity: cart_items[i].quantity,
       price: cart_items[i].price,
     });
   }
   const newOrder = new OrderDetails({
     restaurant_id: req.body.restaurant_id,
+    customer_name: req.body.customerName,
+    restaurant_name: req.body.restaurant_name,
+    restaurant_image_file_path: req.body.restaurant_image,
     customer_id: req.body.customerId,
     order_status: req.body.order_status,
     delivery_status: req.body.delivery_status,
@@ -474,22 +479,36 @@ app.post("/ubereats/orders/customer/neworder", checkAuth, (req, res) => {
     order_country: req.body.order_country,
     order_zipcode: req.body.order_zipcode,
     dishes: dishes,
-    notes: notes,
+    notes: req.body.notes,
   });
   newOrder.save((err, data) => {
     if (err) {
       console.log(err);
       res.status(400).send({ status: "ORDER_CREATION_FAILED" });
     } else {
-      res.send({
-        status: "ORDER_CREATED",
-        allDishes: data,
-      });
+      OrderDetails.find(
+        { customer_id: req.body.customerId },
+        (finderr, allorders) => {
+          if (finderr) {
+            res.status(400).send({ status: "CUSTOMER_ID_NULL" });
+            return;
+          }
+          res.send({
+            status: "ORDER_CREATED",
+            orders: addOrderIds(allorders),
+          });
+        }
+      );
+
+      // res.send({
+      //   status: "ORDER_CREATED",
+      //   orders: addOrderIds(data),
+      // });
     }
   });
 });
 
-app.post("/ubereats/orders/neworder/update", checkAuth, (req, res) => {
+app.post("/ubereats/orders/neworders/update", checkAuth, (req, res) => {
   const OrderUpdate = {
     $set: {
       order_status: req.body.order_status,
@@ -512,10 +531,23 @@ app.post("/ubereats/orders/neworder/update", checkAuth, (req, res) => {
           res.status(400).send({ status: "NO_RESTAURANT_ID" });
           return;
         }
-        res.send({
-          status: "UPDATED_ORDER",
-          orders: data,
-        });
+        OrderDetails.find(
+          { customer_id: req.body.customerId },
+          (finderr, allorders) => {
+            if (finderr) {
+              res.status(400).send({ status: "CUSTOMER_ID_NULL" });
+              return;
+            }
+            res.send({
+              status: "UPDATED_ORDER",
+              orders: addOrderIds(allorders),
+            });
+          }
+        );
+        // res.send({
+        //   status: "UPDATED_ORDER",
+        //   orders: data,
+        // });
       });
     }
   );

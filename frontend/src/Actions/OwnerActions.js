@@ -52,7 +52,6 @@ export const addOwner = (signupdata) => async (dispatch) => {
 export const updateOwner = (ownerUpdateData) => async (dispatch) => {
   try {
     axios.defaults.withCredentials = true;
-    // axios.defaults.headers.common.authorization = getToken();
     axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.post(
       `${backendServer}/ubereats/profile/owner`,
@@ -78,7 +77,6 @@ export const ownerNewOrders = () => async (dispatch) => {
   console.log(" restaurantId: ", restaurantId);
   if (!restaurantId) return;
   axios.defaults.withCredentials = true;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
   axios
     .get(
@@ -112,7 +110,6 @@ export const ownerNewOrdersUpdate =
     console.log(" restaurantId: ", restaurantId);
     if (!restaurantId) return;
     axios.defaults.withCredentials = true;
-    // axios.defaults.headers.common.authorization = getToken();
     axios.defaults.headers.common["x-auth-token"] = getToken();
     axios
       .post(
@@ -142,7 +139,6 @@ export const ownerDeliveredOrders = () => async (dispatch) => {
     localStorage.getItem("user")
   );
   if (!restaurantId) return;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
   axios
     .get(
@@ -175,7 +171,6 @@ export const ownerCancelledOrders = () => async (dispatch) => {
 
   console.log(" restaurantId: ", restaurantId);
   if (!restaurantId) return;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
 
   axios
@@ -207,7 +202,6 @@ export const ownerMenu = () => async (dispatch) => {
   );
   console.log(" restaurantId: ", restaurantId);
   if (!restaurantId) return;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
 
   axios
@@ -235,7 +229,6 @@ export const ownerMenu = () => async (dispatch) => {
 export const ownerMenuUpdate = (dishdata) => async (dispatch) => {
   console.log("Inside ownerMenuUpdate Action from Menu Update ", dishdata);
   axios.defaults.withCredentials = true;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
 
   axios
@@ -257,14 +250,13 @@ export const ownerMenuUpdate = (dishdata) => async (dispatch) => {
     .catch((error) => {
       dispatch({
         type: OWNER_MENU_UPDATE_FAILURE,
-        payload: error.response.data,
+        payload: error.response,
       });
     });
 };
 
 export const ownerMenuAdd = (dishdata) => async (dispatch) => {
   axios.defaults.withCredentials = true;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
 
   axios
@@ -283,16 +275,17 @@ export const ownerMenuAdd = (dishdata) => async (dispatch) => {
       }
     })
     .catch((error) => {
+      console.log("*********************", JSON.stringify(error));
+      console.log("*********************", JSON.stringify(error.response));
       dispatch({
         type: OWNER_MENU_UPDATE_FAILURE,
-        payload: error.response.data,
+        payload: error.response,
       });
     });
 };
 
 export const getUserDetails = (customerId) => async (dispatch) => {
   if (!customerId) return;
-  // axios.defaults.headers.common.authorization = getToken();
   axios.defaults.headers.common["x-auth-token"] = getToken();
 
   axios
@@ -311,7 +304,7 @@ export const getUserDetails = (customerId) => async (dispatch) => {
       if (error.response && error.response.data) {
         dispatch({
           type: CUSTOMER_DETAILS_FETCH_FAILURE,
-          payload: error.response.data,
+          payload: error.response,
         });
       }
     });
@@ -341,7 +334,7 @@ export const getOwnerProfile = () => async (dispatch) => {
       if (error.response && error.response.data) {
         dispatch({
           type: OWNER_PROFILE_DETAILS_FAILURE,
-          payload: error.response.data,
+          payload: error.response,
         });
       }
     });

@@ -95,6 +95,15 @@ const OrderDetails = new Schema({
   notes: {
     type: String,
   },
+  restaurant_name: {
+    type: String,
+  },
+  restaurant_image_file_path: {
+    type: String,
+  },
+  customer_name: {
+    type: String,
+  },
   customer_id: { type: Schema.Types.ObjectId, ref: "CustomerDetails" },
   restaurant_id: { type: Schema.Types.ObjectId, ref: "RestaurantDetails" },
   dishes: [

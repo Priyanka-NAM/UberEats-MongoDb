@@ -79,14 +79,22 @@ class FinalOrder extends Component {
 
   handlePlaceOrder = (e) => {
     e.preventDefault();
-    const { cartItems, restaurantId, currentLocation, userLocation } =
-      this.props;
+    const {
+      cartItems,
+      restaurantId,
+      currentLocation,
+      userLocation,
+      restaurantImage,
+      restaurantName,
+    } = this.props;
     const { deliveryevent, ChangedDeliveryLocation, notes } = this.state;
     this.setState({
       showOrderSucess: true,
     });
     const statusDetails = {
       restaurant_id: restaurantId,
+      restaurant_image: restaurantImage,
+      restaurant_name: restaurantName,
       delivery_status: "Order Received",
       order_status: "Active",
       cart_items: cartItems,
@@ -595,6 +603,7 @@ class FinalOrder extends Component {
 FinalOrder.propTypes = {
   restaurantName: PropTypes.string.isRequired,
   restaurantId: PropTypes.number.isRequired,
+  restaurantImage: PropTypes.string.isRequired,
   cartItems: PropTypes.array.isRequired,
   currentLocation: PropTypes.object.isRequired,
   userLocation: PropTypes.object.isRequired,
@@ -605,6 +614,7 @@ FinalOrder.propTypes = {
 const mapStateToProps = (state) => ({
   restaurantName: state.cartDetails.restaurantName,
   restaurantId: state.cartDetails.restaurantId,
+  restaurantImage: state.cartDetails.restaurantImage,
   restaurantDeliveryMode: state.cartDetails.DeliveryMode,
   currentLocation: state.currentLocation,
   userLocation: state.signin.address,

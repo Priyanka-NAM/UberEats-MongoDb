@@ -83,7 +83,7 @@ class MenuUpdate extends Component {
     this.setState({
       showEdit: false,
     });
-    const isActive = "0";
+    const isActive = "false";
     const { allDishes } = this.state;
     const delDish = allDishes[index];
     const {

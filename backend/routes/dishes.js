@@ -8,8 +8,17 @@ const { secret } = require("../Utils/config");
 const { RestaurantDetails, Dishes } = require("../Models/Models");
 const { checkAuth } = require("../Utils/passport");
 
-// const checkAuth = passport.authenticate("jwt", { session: false });
+const addDishesIds = (dishes) => {
+  const modifiedDishes = dishes.map((dish) => {
+    let modifiedDishData = JSON.parse(JSON.stringify(dish));
+    modifiedDishData.dish_id = dish._id;
+    return modifiedDishData;
+  });
+  return modifiedDishes;
+};
+
 app.post("/ubereats/dishes/adddish", checkAuth, (req, res) => {
+  console.log("add dish request", req);
   const newDish = new Dishes({
     restaurant_id: req.body.restaurentId,
     name: req.body.dishname,
@@ -36,12 +45,19 @@ app.post("/ubereats/dishes/adddish", checkAuth, (req, res) => {
           if (err) {
             res.status(400).send({ status: "DISH_COULDNOT_BE_ADDED" });
           } else {
-            let modifiedDishData = JSON.parse(JSON.stringify(data));
-            modifiedDishData.dish_id = data._id;
-            res.send({
-              status: "DISH_ADDED",
-              allDishes: modifiedDishData,
-            });
+            Dishes.find(
+              { restaurant_id: req.body.restaurentId, isActive: "true" },
+              (finderr, dishes) => {
+                if (finderr) {
+                  res.status(400).send({ status: "RESTAURANT_ID_NULL" });
+                  return;
+                }
+                res.send({
+                  status: "DISH_ADDED",
+                  allDishes: addDishesIds(dishes),
+                });
+              }
+            );
           }
         });
       }
@@ -79,33 +95,44 @@ app.post("/ubereats/dishes/updatedish", checkAuth, (req, res) => {
           res.status(400).send({ status: "CANNOT_GET_UPDATED_DISH_DETAILS" });
           return;
         }
-        let modifiedDishData = JSON.parse(JSON.stringify(dishdata));
-        modifiedDishData.dish_id = dishdata._id;
-        res.send({
-          status: "DISH_UPDATED",
-          allDishes: modifiedDishData,
-        });
+        Dishes.find(
+          { restaurant_id: req.body.restaurentId, isActive: "true" },
+          (finderr, dishes) => {
+            if (finderr) {
+              res.status(400).send({ status: "RESTAURANT_ID_NULL" });
+              return;
+            }
+            res.send({
+              status: "DISH_UPDATED",
+              allDishes: addDishesIds(dishes),
+            });
+          }
+        );
       });
     }
   );
 });
 
 app.get("/ubereats/dishes/alldishes/:restaurant_id", checkAuth, (req, res) => {
-  Dishes.find({ restaurant_id: req.params.restaurant_id }, (err, dishes) => {
-    if (err) {
-      res
-        .status(400)
-        .send({ status: "DISHES_WITH_RESTAURANT_ID_NULL_NOT_FOUND" });
-      return;
+  Dishes.find(
+    { restaurant_id: req.params.restaurant_id, isActive: "true" },
+    (err, dishes) => {
+      if (err) {
+        res
+          .status(400)
+          .send({ status: "DISHES_WITH_RESTAURANT_ID_NULL_NOT_FOUND" });
+        return;
+      }
+
+      const modifiedDishes = dishes.map((dish) => {
+        let modifiedDish = JSON.parse(JSON.stringify(dish));
+        modifiedDish.dish_id = dish._id;
+        return modifiedDish;
+      });
+      res.send({
+        status: "ALL_DISHES",
+        allDishes: modifiedDishes,
+      });
     }
-    const modifiedDishes = dishes.map((dish) => {
-      let modifiedDish = JSON.parse(JSON.stringify(dish));
-      modifiedDish.dish_id = dish._id;
-      return modifiedDish;
-    });
-    res.send({
-      status: "ALL_DISHES",
-      allDishes: modifiedDishes,
-    });
-  });
+  );
 });

@@ -69,7 +69,7 @@ class MenuAddEdit extends Component {
     const { visibilityCb } = this.props;
     e.preventDefault();
     console.log("Inside Handle Submit ", this.state);
-    const isActive = "1";
+    const isActive = "true";
     const {
       dishId,
       restaurentId,
@@ -122,7 +122,6 @@ class MenuAddEdit extends Component {
       },
     };
     axios.defaults.withCredentials = true;
-    // axios.defaults.headers.common.authorization = getToken();
     axios.defaults.headers.common["x-auth-token"] = getToken();
     axios
       .post(
@@ -190,7 +189,6 @@ class MenuAddEdit extends Component {
       imageFilePath,
       updateStatus,
     } = this.state;
-    // const src = `${backendServer}/public/${imageFilePath}`;
     const src = `${imageFilePath}`;
 
     let alertmessage = null;

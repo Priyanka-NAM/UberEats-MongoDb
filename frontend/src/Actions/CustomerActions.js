@@ -85,13 +85,14 @@ export const customerOrders = () => async (dispatch) => {
 };
 
 export const customerOrderPlaced = (customerNewOrder) => async (dispatch) => {
-  const { customer_id: customerId } = JSON.parse(localStorage.getItem("user"));
+  const { customer_id: customerId, name: customerName } = JSON.parse(
+    localStorage.getItem("user")
+  );
   if (!customerId) return;
   try {
-    const postInput = { ...customerNewOrder, customerId };
+    const postInput = { ...customerNewOrder, customerId, customerName };
     console.log("Inside Customer New Order Action");
     axios.defaults.withCredentials = true;
-    // axios.defaults.headers.common.authorization = getToken();
     axios.defaults.headers.common["x-auth-token"] = getToken();
     const res = await axios.post(
       `${backendServer}/ubereats/orders/customer/neworder`,

@@ -4,6 +4,7 @@ import { CART_ADD, CART_EMPTY } from "../Actions/types";
 
 const intitalState = {
   restaurantName: "",
+  restaurantImage: "",
   DeliveryMode: "",
   restaurnatId: -1,
   items: [],
@@ -43,6 +44,7 @@ export default (state = intitalState, action) => {
         );
         return {
           restaurantName: action.payload.restaurantName,
+          restaurantImage: action.payload.restaurantImage,
           restaurantId: action.payload.restaurantId,
           DeliveryMode: action.payload.DeliveryMode,
           items: [action.payload.itemDetails],
@@ -54,6 +56,7 @@ export default (state = intitalState, action) => {
       );
       return {
         restaurantName: action.payload.restaurantName,
+        restaurantImage: action.payload.restaurantImage,
         restaurantId: action.payload.restaurantId,
         DeliveryMode: action.payload.DeliveryMode,
         items: newItems,

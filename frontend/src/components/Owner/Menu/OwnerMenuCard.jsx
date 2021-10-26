@@ -3,7 +3,6 @@ import "react-times/css/classic/default.css";
 import { MdDelete } from "react-icons/md";
 import { Image } from "react-bootstrap";
 import { PropTypes } from "prop-types";
-import backendServer from "../../../backEndConfig";
 
 class OwnerMenuCard extends Component {
   constructor(props) {
@@ -26,7 +25,6 @@ class OwnerMenuCard extends Component {
   render() {
     const { orderIndex, dishName, dishDescription, dishPrice, dishImage } =
       this.props;
-    // const src = `${backendServer}/public/${dishImage}`;
     const src = `${dishImage}`;
 
     console.log("dishPrice ", dishPrice);

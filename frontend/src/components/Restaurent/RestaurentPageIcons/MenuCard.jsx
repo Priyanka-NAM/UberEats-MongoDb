@@ -56,11 +56,13 @@ class MenuCard extends Component {
       price,
       addToCart,
       currentRestaurantName,
+      currentRestaurantImage,
       dishDetails,
       restaurantDeliveryType,
     } = this.props;
     const cartDetails = {
       restaurantName: currentRestaurantName,
+      restaurantImage: currentRestaurantImage,
       restaurantId: dishDetails.restaurant_id,
       DeliveryMode: restaurantDeliveryType,
       itemDetails: {
@@ -85,6 +87,7 @@ class MenuCard extends Component {
       price,
       addToCart,
       currentRestaurantName,
+      currentRestaurantImage,
       dishDetails,
       restaurantName,
       restaurantDeliveryType,
@@ -98,6 +101,7 @@ class MenuCard extends Component {
     }
     const cartDetails = {
       restaurantName: currentRestaurantName,
+      restaurantImage: currentRestaurantImage,
       restaurantId: dishDetails.restaurant_id,
       DeliveryMode: restaurantDeliveryType,
       itemDetails: {
@@ -284,6 +288,7 @@ MenuCard.propTypes = {
   description: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   currentRestaurantName: PropTypes.string.isRequired,
+  currentRestaurantImage: PropTypes.string.isRequired,
   addToCart: PropTypes.func.isRequired,
   restaurantName: PropTypes.string.isRequired,
   isOwnerHome: PropTypes.bool.isRequired,
