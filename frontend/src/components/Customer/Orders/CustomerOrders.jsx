@@ -124,7 +124,6 @@ class CustomerOrders extends Component {
       );
     }
     return filterdorders.map((order, index) => {
-      // const src = `${backendServer}/public/${order.restaurant_image_file_path}`;
       const src = `${order.restaurant_image_file_path}`;
       const date = this.dateparse(order.create_time).toString();
 
@@ -199,6 +198,7 @@ class CustomerOrders extends Component {
       order_country,
       order_zipcode,
       order_delivery_type,
+      notes,
     } = order;
     const { showModal } = this.state;
     const dishComps = dishes.map((dish) => (
@@ -338,6 +338,17 @@ class CustomerOrders extends Component {
           </h3>
           <h3 style={{ fontFamily: "sans-serif", fontSize: "16px" }}>
             {order_delivery_type}
+          </h3>
+          <h3
+            style={{
+              fontFamily: "sans-serif",
+              fontSize: "22px",
+              fontWeight: "bold",
+            }}>
+            Special Instructions
+          </h3>
+          <h3 style={{ fontFamily: "sans-serif", fontSize: "16px" }}>
+            {notes}
           </h3>
         </Modal.Body>
       </Modal>

@@ -92,6 +92,9 @@ const OrderDetails = new Schema({
   order_zipcode: {
     type: Number,
   },
+  notes: {
+    type: String,
+  },
   customer_id: { type: Schema.Types.ObjectId, ref: "CustomerDetails" },
   restaurant_id: { type: Schema.Types.ObjectId, ref: "RestaurantDetails" },
   dishes: [

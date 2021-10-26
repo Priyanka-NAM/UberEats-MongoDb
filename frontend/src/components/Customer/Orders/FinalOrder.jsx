@@ -40,6 +40,7 @@ class FinalOrder extends Component {
       deliveryevent: true,
       tempChangeLocation: "",
       ChangedDeliveryLocation: "",
+      notes: "",
     };
   }
 
@@ -80,7 +81,7 @@ class FinalOrder extends Component {
     e.preventDefault();
     const { cartItems, restaurantId, currentLocation, userLocation } =
       this.props;
-    const { deliveryevent, ChangedDeliveryLocation } = this.state;
+    const { deliveryevent, ChangedDeliveryLocation, notes } = this.state;
     this.setState({
       showOrderSucess: true,
     });
@@ -92,6 +93,7 @@ class FinalOrder extends Component {
     };
     const CostObject = this.getCostFromCartItems(cartItems);
     let order_delivery_type = "Pickup";
+
     if (deliveryevent) {
       order_delivery_type = "Delivery";
     }
@@ -119,6 +121,7 @@ class FinalOrder extends Component {
       order_state: state,
       order_country: country,
       order_zipcode: zipcode,
+      notes: notes,
     };
     this.props.customerOrderPlaced(orderPostInput);
     this.props.emptyCart();
@@ -153,6 +156,13 @@ class FinalOrder extends Component {
       gratitude: cadriverbenefit,
       order_total: ordertotal.toFixed(2),
     };
+  };
+
+  handleChange = (e) => {
+    e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   };
 
   handleDeliveryMode = (e) => {
@@ -408,6 +418,20 @@ class FinalOrder extends Component {
                   <h4 className='subtitle'>Your items</h4>
                 </Row>
                 {cartRows}
+                <br />
+                <br />
+                <input
+                  type='text'
+                  name='notes'
+                  placeholder='Add a Note for the Store'
+                  onChange={this.handleChange}
+                  style={{
+                    backgroundColor: "#eeeee",
+                    fontFamily: "sans-serif",
+                    height: "3rem",
+                    width: "70%",
+                  }}
+                />
               </div>
             </Col>
             <Col

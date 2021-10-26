@@ -474,6 +474,7 @@ app.post("/ubereats/orders/customer/neworder", checkAuth, (req, res) => {
     order_country: req.body.order_country,
     order_zipcode: req.body.order_zipcode,
     dishes: dishes,
+    notes: notes,
   });
   newOrder.save((err, data) => {
     if (err) {
