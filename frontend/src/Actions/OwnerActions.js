@@ -108,7 +108,7 @@ export const ownerNewOrdersUpdate =
       localStorage.getItem("user")
     );
     console.log(" restaurantId: ", restaurantId);
-    if (!restaurantId) return;
+    // if (!restaurantId) return;
     axios.defaults.withCredentials = true;
     axios.defaults.headers.common["x-auth-token"] = getToken();
     axios

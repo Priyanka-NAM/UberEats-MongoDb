@@ -8,7 +8,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import OwnerRestaBanner from "../../Restaurent/RestaurentPageIcons/OwnerRestaBanner";
 import OwnerHome from "../../Home/OwnerHome";
 import MenuCard from "../../Restaurent/RestaurentPageIcons/MenuCard";
-import backendServer from "../../../backEndConfig";
 import { ownerMenu } from "../../../Actions/OwnerActions";
 
 class OwnerHomePage extends Component {
@@ -58,7 +57,6 @@ class OwnerHomePage extends Component {
     let otherDetails = null;
     let description = null;
     if (ownerDetails) {
-      // src = `${backendServer}/public/${ownerDetails.image_file_path}`;
       src = `${ownerDetails.image_file_path}`;
       restaTitle = ownerDetails.name;
       restaAddress = `(${ownerDetails.restaurant_address_line_one})`;

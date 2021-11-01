@@ -463,6 +463,7 @@ app.post("/ubereats/orders/customer/neworder", checkAuth, (req, res) => {
     restaurant_id: req.body.restaurant_id,
     customer_name: req.body.customerName,
     restaurant_name: req.body.restaurant_name,
+    restaurant_city: req.body.restaurant_city,
     restaurant_image_file_path: req.body.restaurant_image,
     customer_id: req.body.customerId,
     order_status: req.body.order_status,
@@ -532,7 +533,7 @@ app.post("/ubereats/orders/neworders/update", checkAuth, (req, res) => {
           return;
         }
         OrderDetails.find(
-          { customer_id: req.body.customerId },
+          { restaurant_id: req.body.restaurant_id },
           (finderr, allorders) => {
             if (finderr) {
               res.status(400).send({ status: "CUSTOMER_ID_NULL" });

@@ -9,7 +9,6 @@ import "../../Styles/SideBar.css";
 import { Modal, Image, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import { addToCart } from "../../../Actions/CartActions";
-import backendServer from "../../../backEndConfig";
 
 class MenuCard extends Component {
   constructor(props) {
@@ -57,12 +56,14 @@ class MenuCard extends Component {
       addToCart,
       currentRestaurantName,
       currentRestaurantImage,
+      currentRestaurantCity,
       dishDetails,
       restaurantDeliveryType,
     } = this.props;
     const cartDetails = {
       restaurantName: currentRestaurantName,
       restaurantImage: currentRestaurantImage,
+      restaurant_city: currentRestaurantCity,
       restaurantId: dishDetails.restaurant_id,
       DeliveryMode: restaurantDeliveryType,
       itemDetails: {
@@ -88,6 +89,7 @@ class MenuCard extends Component {
       addToCart,
       currentRestaurantName,
       currentRestaurantImage,
+      currentRestaurantCity,
       dishDetails,
       restaurantName,
       restaurantDeliveryType,
@@ -102,6 +104,7 @@ class MenuCard extends Component {
     const cartDetails = {
       restaurantName: currentRestaurantName,
       restaurantImage: currentRestaurantImage,
+      restaurant_city: currentRestaurantCity,
       restaurantId: dishDetails.restaurant_id,
       DeliveryMode: restaurantDeliveryType,
       itemDetails: {
@@ -130,7 +133,6 @@ class MenuCard extends Component {
 
     let ItemPrice = Orderquantity * price;
     ItemPrice = ItemPrice.toFixed(2);
-    // const srcModified = `${backendServer}/public/${src}`;
     const srcModified = `${src}`;
     return (
       <>
@@ -289,6 +291,7 @@ MenuCard.propTypes = {
   price: PropTypes.number.isRequired,
   currentRestaurantName: PropTypes.string.isRequired,
   currentRestaurantImage: PropTypes.string.isRequired,
+  currentRestaurantCity: PropTypes.string.isRequired,
   addToCart: PropTypes.func.isRequired,
   restaurantName: PropTypes.string.isRequired,
   isOwnerHome: PropTypes.bool.isRequired,

@@ -43,6 +43,7 @@ export default (state = intitalState, action) => {
           action.payload.itemDetails
         );
         return {
+          restaurant_city: action.payload.restaurant_city,
           restaurantName: action.payload.restaurantName,
           restaurantImage: action.payload.restaurantImage,
           restaurantId: action.payload.restaurantId,
@@ -55,6 +56,7 @@ export default (state = intitalState, action) => {
         action.payload.itemDetails
       );
       return {
+        restaurant_city: action.payload.restaurant_city,
         restaurantName: action.payload.restaurantName,
         restaurantImage: action.payload.restaurantImage,
         restaurantId: action.payload.restaurantId,

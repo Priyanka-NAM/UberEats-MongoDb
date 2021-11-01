@@ -9,7 +9,6 @@ import { OffCanvas, OffCanvasMenu } from "react-offcanvas";
 import { FaUserCircle, FaHeart } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { BiX } from "react-icons/bi";
-import backendServer from "../../../backEndConfig";
 
 import { userSignOut } from "../../../Actions/signinAction";
 import "../../Styles/Header.css";
@@ -34,7 +33,6 @@ class ProfileCanvas extends Component {
     const { showModal } = this.props;
     const user = JSON.parse(localStorage.getItem("user"));
     const { profile_pic_file_path } = user;
-    // const src = `${backendServer}/public/${profile_pic_file_path}`;
     const src = `${profile_pic_file_path}`;
 
     return (

@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable object-shorthand */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
@@ -85,6 +86,7 @@ class FinalOrder extends Component {
       currentLocation,
       userLocation,
       restaurantImage,
+      restaurant_city,
       restaurantName,
     } = this.props;
     const { deliveryevent, ChangedDeliveryLocation, notes } = this.state;
@@ -94,6 +96,7 @@ class FinalOrder extends Component {
     const statusDetails = {
       restaurant_id: restaurantId,
       restaurant_image: restaurantImage,
+      restaurant_city: restaurant_city,
       restaurant_name: restaurantName,
       delivery_status: "Order Received",
       order_status: "Active",
@@ -603,6 +606,7 @@ class FinalOrder extends Component {
 FinalOrder.propTypes = {
   restaurantName: PropTypes.string.isRequired,
   restaurantId: PropTypes.number.isRequired,
+  restaurant_city: PropTypes.number.isRequired,
   restaurantImage: PropTypes.string.isRequired,
   cartItems: PropTypes.array.isRequired,
   currentLocation: PropTypes.object.isRequired,
@@ -613,6 +617,7 @@ FinalOrder.propTypes = {
 };
 const mapStateToProps = (state) => ({
   restaurantName: state.cartDetails.restaurantName,
+  restaurant_city: state.cartDetails.restaurant_city,
   restaurantId: state.cartDetails.restaurantId,
   restaurantImage: state.cartDetails.restaurantImage,
   restaurantDeliveryMode: state.cartDetails.DeliveryMode,

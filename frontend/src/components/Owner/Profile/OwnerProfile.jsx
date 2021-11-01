@@ -15,6 +15,7 @@ import OwnerHome from "../../Home/OwnerHome";
 import backendServer from "../../../backEndConfig";
 import { getToken } from "../../Service/authService";
 import { updateOwner, getOwnerProfile } from "../../../Actions/OwnerActions";
+import { ownerProfilePic } from "../../../Actions/ImageUploadAction";
 
 class OwnerProfile extends Component {
   constructor(props) {
@@ -59,29 +60,7 @@ class OwnerProfile extends Component {
     e.preventDefault();
     const data = new FormData();
     data.append("image", this.fileInput.files[0]);
-    const uploadConfig = {
-      headers: {
-        "content-type": "multipart/form-data",
-        authorization: getToken(),
-      },
-    };
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
-    axios
-      .post(
-        `${backendServer}/ubereats/upload/profile_upload`,
-        data,
-        uploadConfig
-      )
-      .then((response) => {
-        this.setState({
-          src: `${backendServer}/public/${response.data}`,
-          image_file_path: response.data,
-        });
-      })
-      .catch((err) => {
-        console.log("Upload file error: ", err.response);
-      });
+    this.props.ownerProfilePic(data);
   }
 
   closeAlert = () => {
@@ -115,12 +94,11 @@ class OwnerProfile extends Component {
       phone_num,
       restaurant_start_time,
       restaurant_end_time,
-      image_file_path,
+
       delivery_type,
       showAlert,
     } = this.state;
-
-    // const src = `${backendServer}/public/${image_file_path}`;
+    const { image_file_path } = this.props;
     const src = `${image_file_path}`;
     const { UpdatedStatus } = this.props;
 
@@ -498,14 +476,19 @@ class OwnerProfile extends Component {
 OwnerProfile.propTypes = {
   updateOwner: PropTypes.func.isRequired,
   getOwnerProfile: PropTypes.func.isRequired,
+  ownerProfilePic: PropTypes.func.isRequired,
   ownerDetails: PropTypes.object.isRequired,
+  image_file_path: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   ownerDetails: state.owner.ownerDetails.user,
   UpdatedStatus: state.owner.ownerDetails.status,
+  image_file_path: state.imageUpload.owner_image_file_path,
 });
 
-export default connect(mapStateToProps, { updateOwner, getOwnerProfile })(
-  OwnerProfile
-);
+export default connect(mapStateToProps, {
+  updateOwner,
+  getOwnerProfile,
+  ownerProfilePic,
+})(OwnerProfile);

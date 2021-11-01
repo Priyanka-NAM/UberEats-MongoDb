@@ -101,6 +101,9 @@ const OrderDetails = new Schema({
   restaurant_image_file_path: {
     type: String,
   },
+  restaurant_city: {
+    type: String,
+  },
   customer_name: {
     type: String,
   },

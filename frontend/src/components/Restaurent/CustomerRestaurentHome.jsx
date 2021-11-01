@@ -92,6 +92,7 @@ class RestaurentHome extends Component {
           price={dish.price}
           currentRestaurantName={restaurentDetails.name}
           currentRestaurantImage={restaurentDetails.image_file_path}
+          currentRestaurantCity={restaurentDetails.restaurant_city}
           restaurantDeliveryType={restaurentDetails.delivery_type}
           isOwnerHome={false}
           description={dish.description}
@@ -101,7 +102,6 @@ class RestaurentHome extends Component {
       ));
     }
     if (restaurentDetails) {
-      // const src = `${backendServer}/public/${restaurentDetails.image_file_path}`;
       const src = `${restaurentDetails.image_file_path}`;
       restaurentBanner = (
         <RestaBanner

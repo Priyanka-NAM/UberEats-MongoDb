@@ -5,6 +5,7 @@ import CustomerReducer from "./CustomerReducer";
 import CartReducer from "./CartReducer";
 import LocationReducer from "./LocationReducer";
 import ResraurantReducer from "./RestaurantReducer";
+import ImageUploadReducer from "./ImageUploadReducer";
 import { USER_SIGNOUT } from "../Actions/types";
 
 const appreducer = combineReducers({
@@ -14,6 +15,7 @@ const appreducer = combineReducers({
   cartDetails: CartReducer,
   currentLocation: LocationReducer,
   restaurants: ResraurantReducer,
+  imageUpload: ImageUploadReducer,
 });
 
 const rootreducer = (state, action) => {

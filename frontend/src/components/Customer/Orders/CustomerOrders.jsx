@@ -19,12 +19,9 @@ import { BiX } from "react-icons/bi";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import moment from "moment";
-import "moment-timezone";
-
+import { ownerNewOrdersUpdate } from "../../../Actions/OwnerActions";
 import { customerOrders } from "../../../Actions/CustomerActions";
 import Header from "../../Home/HomeIcons/Header";
-import backendServer from "../../../backEndConfig";
 
 class CustomerOrders extends Component {
   constructor(props) {
@@ -38,7 +35,6 @@ class CustomerOrders extends Component {
 
   componentDidUpdate(prevprops) {
     const { orders } = this.props;
-    console.log("orders", orders);
     if (orders !== prevprops.orders) {
       this.setState({
         filterdOrders: orders,
@@ -59,8 +55,16 @@ class CustomerOrders extends Component {
     });
   };
 
+  handleCancel = (order) => {
+    this.props.ownerNewOrdersUpdate({
+      order_id: order.order_id,
+      restaurant_id: order.restaurant_id,
+      delivery_status: "Cancel",
+      order_status: "Cancelled",
+    });
+  };
+
   handleSelect = (e) => {
-    console.log("Drop Down Select", e.target.value);
     const filterValue = e.target.value;
     const { orders } = this.state;
     let filterdOrders = orders;
@@ -78,11 +82,8 @@ class CustomerOrders extends Component {
   dateparse = (date) => {
     console.log("Date ", date);
     const dateComponents = date.split("T");
-    console.log("dateComponents", dateComponents);
     const datePieces = dateComponents[0].split("-");
-    console.log("datePieces", datePieces);
     const timePieces = dateComponents[1].split(":");
-    console.log("timepieces", timePieces);
 
     return new Date(
       Date.UTC(
@@ -161,6 +162,7 @@ class CustomerOrders extends Component {
               </Col>
               <br />
             </Col>
+
             <Col align='right'>
               <Button
                 variant='dark'
@@ -174,6 +176,21 @@ class CustomerOrders extends Component {
                 }}>
                 Order Details
               </Button>
+              <br /> <br />
+              {order.delivery_status === "Order Received" && (
+                <Button
+                  variant='dark'
+                  onClick={() => this.handleCancel(order)}
+                  style={{
+                    width: "40%",
+                    height: "30%",
+                    fontSize: "20px",
+                    fontFamily: "sans-serif",
+                    fontWeight: "500",
+                  }}>
+                  Cancel
+                </Button>
+              )}
             </Col>
           </Row>
           <hr size='3' color='blue' />
@@ -417,10 +434,14 @@ class CustomerOrders extends Component {
 CustomerOrders.propTypes = {
   customerOrders: PropTypes.func.isRequired,
   orders: PropTypes.object.isRequired,
+  ownerNewOrdersUpdate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   orders: state.customer.orders,
 });
 
-export default connect(mapStateToProps, { customerOrders })(CustomerOrders);
+export default connect(mapStateToProps, {
+  customerOrders,
+  ownerNewOrdersUpdate,
+})(CustomerOrders);

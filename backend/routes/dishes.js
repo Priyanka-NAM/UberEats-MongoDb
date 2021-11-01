@@ -32,7 +32,11 @@ app.post("/ubereats/dishes/adddish", checkAuth, (req, res) => {
   });
 
   Dishes.findOne(
-    { restaurant_id: req.body.restaurentId, name: req.body.dishname },
+    {
+      restaurant_id: req.body.restaurentId,
+      name: req.body.dishname,
+      isActive: "true",
+    },
     (error, result) => {
       if (error) {
         res.status(400).send({ status: "Internal server error" });
@@ -68,7 +72,6 @@ app.post("/ubereats/dishes/adddish", checkAuth, (req, res) => {
 app.post("/ubereats/dishes/updatedish", checkAuth, (req, res) => {
   const DishUpdate = {
     $set: {
-      // dishId: req.body.dishId,
       restaurant_id: req.body.restaurentId,
       name: req.body.dishname,
       description: req.body.dishdescription,

@@ -1,25 +1,3 @@
-// router.get("/owner/:restaurant_id", (req, res) => {
-//   const sql = `CALL restaurant_get("${req.params.restaurant_id}", "${req.body.email}");`;
-//   db.query(sql, (err, result) => {
-//     try {
-//       if (err) {
-//         throw err;
-//       }
-//       if (result && result.length > 0 && result[0][0]) {
-//         res.writeHead(200, {
-//           "Content-Type": "text/plain",
-//         });
-//         res.end(JSON.stringify(result[0]));
-//       }
-//     } catch (error) {
-//       res.writeHead(500, {
-//         "Content-Type": "text/plain",
-//       });
-//       res.end(JSON.stringify(error));
-//     }
-//   });
-// });
-
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
 const passport = require("passport");

@@ -22,6 +22,7 @@ import {
 import { getToken } from "../../Service/authService";
 import Header from "../../Home/HomeIcons/Header";
 import { updateCustomer } from "../../../Actions/CustomerActions";
+import { customerProfilePic } from "../../../Actions/ImageUploadAction";
 import backendServer from "../../../backEndConfig";
 
 class CustomerProfile extends Component {
@@ -71,29 +72,7 @@ class CustomerProfile extends Component {
     e.preventDefault();
     const data = new FormData();
     data.append("image", this.fileInput.files[0]);
-    const uploadConfig = {
-      headers: {
-        "content-type": "multipart/form-data",
-        authorization: getToken(),
-      },
-    };
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common.authorization = getToken();
-    axios
-      .post(
-        `${backendServer}/ubereats/upload/profile_upload`,
-        data,
-        uploadConfig
-      )
-      .then((response) => {
-        this.setState({
-          src: `${backendServer}/public/${response.data}`,
-          profile_pic_file_path: response.data,
-        });
-      })
-      .catch((err) => {
-        console.log("Upload file error: ", err.response);
-      });
+    this.props.customerProfilePic(data);
   }
 
   closeAlert = () => {
@@ -121,10 +100,12 @@ class CustomerProfile extends Component {
       password,
       country,
       zipcode,
-      profile_pic_file_path,
+
       showAlert,
     } = this.state;
-    // const src = `${backendServer}/public/${profile_pic_file_path}`;
+    const { profile_pic_file_path } = this.props;
+    console.log("profile_pic_file_path", profile_pic_file_path);
+
     const src = `${profile_pic_file_path}`;
 
     const { UpdateStatus } = this.props;
@@ -439,11 +420,16 @@ class CustomerProfile extends Component {
 CustomerProfile.propTypes = {
   updateCustomer: PropTypes.func.isRequired,
   customerDetails: PropTypes.object.isRequired,
+  customerProfilePic: PropTypes.func.isRequired,
+  profile_pic_file_path: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   customerDetails: state.customer.customerDetails.user,
   UpdateStatus: state.customer.customerDetails.status,
+  profile_pic_file_path: state.imageUpload.customer_image_file_path,
 });
 
-export default connect(mapStateToProps, { updateCustomer })(CustomerProfile);
+export default connect(mapStateToProps, { updateCustomer, customerProfilePic })(
+  CustomerProfile
+);

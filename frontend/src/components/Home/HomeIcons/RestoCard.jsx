@@ -11,7 +11,6 @@ import "../../Styles/SideBar.css";
 import "../../Styles/Card.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card } from "react-bootstrap";
-import backendServer from "../../../backEndConfig";
 import { updateFav } from "../../../Actions/CustomerActions";
 
 const FavButton = {
@@ -75,7 +74,6 @@ class RestoCard extends Component {
     const { restaurant } = this.props;
 
     const { liked } = this.state;
-    // const srcModified = `${backendServer}/public/${restaurant.image_file_path}`;
     const srcModified = `${restaurant.image_file_path}`;
 
     return (

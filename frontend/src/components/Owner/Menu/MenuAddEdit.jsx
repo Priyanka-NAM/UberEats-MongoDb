@@ -11,6 +11,7 @@ import { Button, Form, Col, Alert, Row, Card } from "react-bootstrap";
 import backendServer from "../../../backEndConfig";
 import { getToken } from "../../Service/authService";
 import { ownerMenuAdd, ownerMenuUpdate } from "../../../Actions/OwnerActions";
+import { dishProfilePic } from "../../../Actions/ImageUploadAction";
 
 class MenuAddEdit extends Component {
   constructor(props) {
@@ -115,31 +116,38 @@ class MenuAddEdit extends Component {
     e.preventDefault();
     const data = new FormData();
     data.append("image", this.fileInput.files[0]);
-    const uploadConfig = {
-      headers: {
-        "content-type": "multipart/form-data",
-        authorization: getToken(),
-      },
-    };
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common["x-auth-token"] = getToken();
-    axios
-      .post(
-        `${backendServer}/ubereats/upload/profile_upload`,
-        data,
-        uploadConfig
-      )
-      .then((response) => {
-        console.log("Response from server ", response.data);
-        this.setState({
-          src: `${backendServer}/public/${response.data}`,
-          imageFilePath: `${response.data}`,
-        });
-      })
-      .catch((err) => {
-        console.log("Upload file error: ", err.response);
-      });
+    this.props.dishProfilePic(data);
   }
+
+  // handleUplokadImage(e) {
+  //   e.preventDefault();
+  //   const data = new FormData();
+  //   data.append("image", this.fileInput.files[0]);
+  //   const uploadConfig = {
+  //     headers: {
+  //       "content-type": "multipart/form-data",
+  //       authorization: getToken(),
+  //     },
+  //   };
+  //   axios.defaults.withCredentials = true;
+  //   axios.defaults.headers.common["x-auth-token"] = getToken();
+  //   axios
+  //     .post(
+  //       `${backendServer}/ubereats/fileUpload/profile_upload`,
+  //       data,
+  //       uploadConfig
+  //     )
+  //     .then((response) => {
+  //       console.log("Response from server ", response.data);
+  //       this.setState({
+  //         src: `${backendServer}/public/${response.data}`,
+  //         imageFilePath: `${response.data}`,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log("Upload file error: ", err.response);
+  //     });
+  // }
 
   setStateFromProps = (updatedProps) => {
     const { currentDish } = updatedProps;
@@ -186,9 +194,9 @@ class MenuAddEdit extends Component {
       dishtype,
       ingredients,
       price,
-      imageFilePath,
       updateStatus,
     } = this.state;
+    const { imageFilePath } = this.props;
     const src = `${imageFilePath}`;
 
     let alertmessage = null;
@@ -373,11 +381,16 @@ MenuAddEdit.propTypes = {
   currentDish: PropTypes.object.isRequired,
   ownerMenuAdd: PropTypes.func.isRequired,
   ownerMenuUpdate: PropTypes.func.isRequired,
+  dishProfilePic: PropTypes.func.isRequired,
+  imageFilePath: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = (state) => ({
+  imageFilePath: state.imageUpload.dish_image_file_path,
+});
 
 export default connect(mapStateToProps, {
   ownerMenuAdd,
   ownerMenuUpdate,
+  dishProfilePic,
 })(MenuAddEdit);
