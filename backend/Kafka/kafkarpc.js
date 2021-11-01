@@ -1,5 +1,5 @@
 var crypto = require("crypto");
-var conn = require("./Connection");
+var conn = require("./connection");
 
 var TIMEOUT = 8000; //time to wait for response in ms
 var self;
@@ -44,6 +44,9 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
 
   //make sure we have a response topic
   self.setupResponseQueue(self.producer, topic_name, function () {
+    console.log("in response");
+    //put the request on a topic
+
     var payloads = [
       {
         topic: topic_name,
@@ -55,8 +58,12 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
         partition: 0,
       },
     ];
+    console.log("in response1");
+    console.log(self.producer.ready);
     self.producer.send(payloads, function (err, data) {
+      console.log("in response2");
       if (err) console.log(err);
+      console.log(data);
     });
   });
 };
@@ -65,11 +72,14 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
   //don't mess around if we have a queue
   if (this.response_queue) return next();
 
+  console.log("1");
+
   self = this;
 
   //subscribe to messages
   var consumer = self.connection.getConsumer("response_topic");
   consumer.on("message", function (message) {
+    console.log("msg received");
     var data = JSON.parse(message.value);
     //get the correlationId
     var correlationId = data.correlationId;
@@ -82,9 +92,10 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
       //delete the entry from hash
       delete self.requests[correlationId];
       //callback, no err
-      entry.callback(null, data.data);
+      entry.callback(data.error, data.data);
     }
   });
   self.response_queue = true;
+  console.log("returning next");
   return next();
 };
