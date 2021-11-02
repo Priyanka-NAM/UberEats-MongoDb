@@ -12,7 +12,6 @@ const addOrderIds = (orders) => {
 function handle_request(msg, callback) {
   let dishes = [];
   const cart_items = msg.cart_items;
-  console.log(msg);
   for (let i = 0; i < cart_items.length; i += 1) {
     dishes.push({
       dish_id: cart_items[i].dish_id,
@@ -46,14 +45,20 @@ function handle_request(msg, callback) {
   });
   newOrder.save((err, data) => {
     if (err) {
-      callback(null, { errCode: 400, data: {status: "ORDER_CREATION_FAILED" }});
+      callback(null, {
+        errCode: 400,
+        data: { status: "ORDER_CREATION_FAILED" },
+      });
       return;
     } else {
       OrderDetails.find(
         { customer_id: msg.customerId },
         (finderr, allorders) => {
           if (finderr) {
-            callback(null, { errCode: 400,data: { status: "CUSTOMER_ID_NULL"} });
+            callback(null, {
+              errCode: 400,
+              data: { status: "CUSTOMER_ID_NULL" },
+            });
             return;
           }
           callback(null, {

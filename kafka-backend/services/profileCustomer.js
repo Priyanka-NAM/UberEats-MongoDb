@@ -21,7 +21,6 @@ function handle_request(msg, callback) {
       profile_pic_file_path: msg.profile_pic_file_path,
     },
   };
-
   CustomerDetails.updateOne(
     { _id: msg.customer_id },
     UserUpdate,

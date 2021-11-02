@@ -2,7 +2,7 @@ const { Dishes } = require("../Models/Models");
 
 function handle_request(msg, callback) {
   Dishes.find(
-    { restaurant_id: req.params.restaurant_id, isActive: "true" },
+    { restaurant_id: msg.restaurant_id, isActive: "true" },
     (err, dishes) => {
       if (err) {
         callback(null, {
