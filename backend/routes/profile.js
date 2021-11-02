@@ -2,141 +2,233 @@ const jwt = require("jsonwebtoken");
 const md5 = require("md5");
 const passport = require("passport");
 const app = require("../app");
-// require("../Utils/passport");
 const { checkAuth } = require("../Utils/passport");
 const { secret } = require("../Utils/config");
 const { CustomerDetails, RestaurantDetails } = require("../Models/Models");
+var kafka = require("../kafka/client");
 
-// const checkAuth = passport.authenticate("jwt", { session: false });
+// app.post("/ubereats/profile/customer", checkAuth, (req, res) => {
+//   const hashedPassword = md5(req.body.password);
 
-// auth();
-app.post("/ubereats/profile/customer", checkAuth, (req, res) => {
-  const hashedPassword = md5(req.body.password);
+//   const UserUpdate = {
+//     $set: {
+//       // customer_id: req.body.customer_id,
+//       is_owner: 0,
+//       name: req.body.name,
+//       email_id: req.body.email,
+//       password: hashedPassword,
+//       nick_name: req.body.nick_name,
+//       phone_num: req.body.phone_num,
+//       date_of_birth: req.body.date_of_birth,
+//       address_line_1: req.body.address_line_1,
+//       city: req.body.city,
+//       state: req.body.state,
+//       country: req.body.country,
+//       zipcode: req.body.zipcode,
+//       profile_pic_file_path: req.body.profile_pic_file_path,
+//     },
+//   };
 
-  const UserUpdate = {
-    $set: {
-      // customer_id: req.body.customer_id,
-      is_owner: 0,
-      name: req.body.name,
-      email_id: req.body.email,
-      password: hashedPassword,
-      nick_name: req.body.nick_name,
-      phone_num: req.body.phone_num,
-      date_of_birth: req.body.date_of_birth,
-      address_line_1: req.body.address_line_1,
-      city: req.body.city,
-      state: req.body.state,
-      country: req.body.country,
-      zipcode: req.body.zipcode,
-      profile_pic_file_path: req.body.profile_pic_file_path,
-    },
-  };
+//   CustomerDetails.updateOne(
+//     { _id: req.body.customer_id },
+//     UserUpdate,
+//     (error, result) => {
+//       if (error) {
+//         console.log("Error in Customer Profile Update ", error);
+//         res.status(400).send({ status: "NO_CUSTOMER_ID" });
+//         return;
+//       }
+//       CustomerDetails.findOne(
+//         { _id: req.body.customer_id },
+//         (err, customerdata) => {
+//           if (err) {
+//             console.log("Error in Customer Profile Update ", error);
+//             res
+//               .status(400)
+//               .send({ status: "CANNOT_GET_UPDATED_CUSTOMER_DETAILS" });
+//             return;
+//           }
+//           let modifiedCustomerData = JSON.parse(JSON.stringify(customerdata));
+//           modifiedCustomerData.customer_id = customerdata._id;
+//           // customerdata.customer_id = customerdata._id;
+//           res.send({
+//             status: "CUSTOMER_UPDATED",
+//             user: modifiedCustomerData,
+//           });
+//         }
+//       );
+//     }
+//   );
+// });
 
-  CustomerDetails.updateOne(
-    { _id: req.body.customer_id },
-    UserUpdate,
-    (error, result) => {
-      if (error) {
-        console.log("Error in Customer Profile Update ", error);
-        res.status(400).send({ status: "NO_CUSTOMER_ID" });
+app.post("/ubereats/profile/customer", checkAuth, async function (req, res) {
+  kafka.make_request("profileCustomer", req.body, function (err, results) {
+    console.log("Customer Profile response from Kafka Backend ", results);
+    if (err) {
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+      return;
+    } else {
+      if (results.errCode) {
+        const errCode = results.errCode;
+        if (errCode === 500) {
+          res.writeHead(500, {
+            "Content-Type": "text/plain",
+          });
+          res.end();
+        } else if (errCode === 400) {
+          res.status(400).send(results.data);
+        }
+        return;
+      } else {
+        res.send(results.data);
         return;
       }
-      CustomerDetails.findOne(
-        { _id: req.body.customer_id },
-        (err, customerdata) => {
-          if (err) {
-            console.log("Error in Customer Profile Update ", error);
-            res
-              .status(400)
-              .send({ status: "CANNOT_GET_UPDATED_CUSTOMER_DETAILS" });
-            return;
-          }
-          let modifiedCustomerData = JSON.parse(JSON.stringify(customerdata));
-          modifiedCustomerData.customer_id = customerdata._id;
-          // customerdata.customer_id = customerdata._id;
-          res.send({
-            status: "CUSTOMER_UPDATED",
-            user: modifiedCustomerData,
-          });
-        }
-      );
     }
-  );
+  });
 });
 
-app.post("/ubereats/profile/owner", checkAuth, (req, res) => {
-  const hashedPassword = md5(req.body.password);
+// app.post("/ubereats/profile/owner", checkAuth, (req, res) => {
+//   const hashedPassword = md5(req.body.password);
 
-  const RestaurantUpdate = {
-    $set: {
-      is_owner: 1,
-      name: req.body.name,
-      email_id: req.body.email,
-      password: hashedPassword,
-      description: req.body.description,
-      phone_num: req.body.phone_num,
-      restaurant_address_line_one: req.body.restaurant_address_line_one,
-      restaurant_city: req.body.restaurant_city,
-      restaurant_state: req.body.restaurant_state,
-      restaurant_country: req.body.restaurant_country,
-      restaurant_zipcode: req.body.restaurant_zipcode,
-      image_file_path: req.body.image_file_path,
-      restaurant_start_time: req.body.restaurant_start_time,
-      restaurant_end_time: req.body.restaurant_end_time,
-      restaurant_week_start: req.body.restaurant_week_start,
-      restaurant_week_end: req.body.restaurant_week_end,
-      national_brand: req.body.national_brand,
-      delivery_type: req.body.delivery_type,
-    },
-  };
-  RestaurantDetails.updateOne(
-    { _id: req.body.restaurant_id },
-    RestaurantUpdate,
-    (error, result) => {
-      if (error) {
-        console.log("Error in Restaurant Profile Update ", error);
-        res.status(400).send({ status: "NO_RESTAURANT_ID" });
+//   const RestaurantUpdate = {
+//     $set: {
+//       is_owner: 1,
+//       name: req.body.name,
+//       email_id: req.body.email,
+//       password: hashedPassword,
+//       description: req.body.description,
+//       phone_num: req.body.phone_num,
+//       restaurant_address_line_one: req.body.restaurant_address_line_one,
+//       restaurant_city: req.body.restaurant_city,
+//       restaurant_state: req.body.restaurant_state,
+//       restaurant_country: req.body.restaurant_country,
+//       restaurant_zipcode: req.body.restaurant_zipcode,
+//       image_file_path: req.body.image_file_path,
+//       restaurant_start_time: req.body.restaurant_start_time,
+//       restaurant_end_time: req.body.restaurant_end_time,
+//       restaurant_week_start: req.body.restaurant_week_start,
+//       restaurant_week_end: req.body.restaurant_week_end,
+//       national_brand: req.body.national_brand,
+//       delivery_type: req.body.delivery_type,
+//     },
+//   };
+//   RestaurantDetails.updateOne(
+//     { _id: req.body.restaurant_id },
+//     RestaurantUpdate,
+//     (error, result) => {
+//       if (error) {
+//         console.log("Error in Restaurant Profile Update ", error);
+//         res.status(400).send({ status: "NO_RESTAURANT_ID" });
+//         return;
+//       }
+//       RestaurantDetails.findOne(
+//         { _id: req.body.restaurant_id },
+//         (err, restaurantdata) => {
+//           if (err) {
+//             console.log("Error in Restaurant Profile Update ", error);
+//             res
+//               .status(400)
+//               .send({ status: "CANNOT_GET_UPDATED_RESTAURANT_DETAILS" });
+//             return;
+//           }
+//           let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
+//           modifiedData.restaurant_id = restaurantdata._id;
+//           res.send({
+//             status: "RESTAURANT_UPDATED",
+//             user: modifiedData,
+//           });
+//         }
+//       );
+//     }
+//   );
+// });
+
+app.post("/ubereats/profile/owner", checkAuth, async function (req, res) {
+  kafka.make_request("profileOwner", req.body, function (err, results) {
+    console.log("profileOwner response from Kafka Backend ", results);
+    if (err) {
+      res.json({
+        status: "error",
+        msg: "System Error, Try Again.",
+      });
+      return;
+    } else {
+      if (results.errCode) {
+        const errCode = results.errCode;
+        if (errCode === 500) {
+          res.writeHead(500, {
+            "Content-Type": "text/plain",
+          });
+          res.end();
+        } else if (errCode === 400) {
+          res.status(400).send(results.data);
+        }
+        return;
+      } else {
+        res.send(results.data);
         return;
       }
-      RestaurantDetails.findOne(
-        { _id: req.body.restaurant_id },
-        (err, restaurantdata) => {
-          if (err) {
-            console.log("Error in Restaurant Profile Update ", error);
-            res
-              .status(400)
-              .send({ status: "CANNOT_GET_UPDATED_RESTAURANT_DETAILS" });
-            return;
-          }
-          let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
-          modifiedData.restaurant_id = restaurantdata._id;
-          res.send({
-            status: "RESTAURANT_UPDATED",
-            user: modifiedData,
-          });
-        }
-      );
     }
-  );
+  });
 });
+
+// app.get(
+//   "/ubereats/profile/owner/details/:restaurant_id",
+//   checkAuth,
+//   (req, res) => {
+//     RestaurantDetails.findOne(
+//       { _id: req.params.restaurant_id },
+//       (err, restaurantdata) => {
+//         if (err || !restaurantdata) {
+//           res.status(400).send({ status: "OWNER_PROFILE_DETAILS_FAILURE" });
+//           return;
+//         }
+//         let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
+//         modifiedData.restaurant_id = restaurantdata._id;
+//         res.send({
+//           status: "OWNER_PROFILE_DETAILS",
+//           user: modifiedData,
+//         });
+//       }
+//     );
+//   }
+// );
 
 app.get(
   "/ubereats/profile/owner/details/:restaurant_id",
   checkAuth,
-  (req, res) => {
-    RestaurantDetails.findOne(
-      { _id: req.params.restaurant_id },
-      (err, restaurantdata) => {
-        if (err || !restaurantdata) {
-          res.status(400).send({ status: "OWNER_PROFILE_DETAILS_FAILURE" });
+  async function (req, res) {
+    kafka.make_request(
+      "getOwnerRestaurantDetails",
+      req.params,
+      function (err, results) {
+        console.log("profileOwner response from Kafka Backend ", results);
+        if (err) {
+          res.json({
+            status: "error",
+            msg: "System Error, Try Again.",
+          });
           return;
+        } else {
+          if (results.errCode) {
+            const errCode = results.errCode;
+            if (errCode === 500) {
+              res.writeHead(500, {
+                "Content-Type": "text/plain",
+              });
+              res.end();
+            } else if (errCode === 400) {
+              res.status(400).send(results.data);
+            }
+            return;
+          } else {
+            res.send(results.data);
+            return;
+          }
         }
-        let modifiedData = JSON.parse(JSON.stringify(restaurantdata));
-        modifiedData.restaurant_id = restaurantdata._id;
-        res.send({
-          status: "OWNER_PROFILE_DETAILS",
-          user: modifiedData,
-        });
       }
     );
   }

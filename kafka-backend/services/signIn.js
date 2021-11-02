@@ -2,9 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const md5 = require("md5");
 
-// const db = require("../Utils/connection");
 const { secret } = require("../Utils/config");
-// const app = require("../app");
 const { CustomerDetails, RestaurantDetails } = require("../Models/Models");
 
 function handle_request(msg, callback) {
@@ -20,21 +18,14 @@ function handle_request(msg, callback) {
           "Fetching restaurant details error in SignIn request handler"
         );
         callback(null, { errCode: 500, data: {} });
-        // res.writeHead(500, {
-        //   "Content-Type": "text/plain",
-        // });
-        // res.end();
+
         return;
       }
       if (result) {
         let modifiedData = JSON.parse(JSON.stringify(result));
         modifiedData.restaurant_id = result._id;
         const token = jwt.sign({ _id: result }, secret);
-        // res.header("x-auth-token", token).send({
-        //   status: "Authentication Successful",
-        //   user: modifiedData,
-        //   token,
-        // });
+
         console.log("Restaurant Owner Authentication Success");
         callback(null, {
           data: {
@@ -53,21 +44,14 @@ function handle_request(msg, callback) {
                 "Fetching customer details error in SignIn request handler"
               );
               callback(null, { errCode: 500, data: {} });
-              //   res.writeHead(500, {
-              //     "Content-Type": "text/plain",
-              //   });
-              //   res.end();
+
               return;
             }
             if (result) {
               let modifiedCustomerData = JSON.parse(JSON.stringify(result));
               modifiedCustomerData.customer_id = result._id;
               const token = jwt.sign({ _id: result }, secret);
-              //   res.header("x-auth-token", token).send({
-              //     status: "Authentication Successful",
-              //     user: modifiedCustomerData,
-              //     token,
-              //   });
+
               console.log("Customer Authentication Success");
               callback(null, {
                 data: {
@@ -78,7 +62,6 @@ function handle_request(msg, callback) {
               });
               return;
             } else {
-              //   res.status(400).send({ status: "Authentication Failed" });
               console.log("Authenticaion Failure - SignIn Request Handler");
               callback(null, {
                 errCode: 400,

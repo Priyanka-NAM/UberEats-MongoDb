@@ -1,7 +1,7 @@
 var crypto = require("crypto");
 var conn = require("./connection");
 
-var TIMEOUT = 8000; //time to wait for response in ms
+var TIMEOUT = 40000; //time to wait for response in ms
 var self;
 
 exports = module.exports = KafkaRPC;
@@ -81,6 +81,7 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
   consumer.on("message", function (message) {
     console.log("msg received");
     var data = JSON.parse(message.value);
+    console.log("Response recieved from kafka backend ==> ", message.value);
     //get the correlationId
     var correlationId = data.correlationId;
     //is it a response to a pending request

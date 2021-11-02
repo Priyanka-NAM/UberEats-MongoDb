@@ -4,10 +4,24 @@ const mongo_connection = require("./Utils/connection");
 //topics files
 
 var signIn = require("./services/signIn");
-// var Signup = require("./services/signup");
+var signUpCustomer = require("./services/signUpCustomer");
+var signUpOwner = require("./services/signUpOwner");
+var profileCustomer = require("./services/profileCustomer");
+var profileOwner = require("./services/profileOwner");
+var getOwnerRestaurantDetails = require("./services/getOwnerRestaurantDetails");
+
+var dishesAddDish = require("./services/dishesAddDish");
+var dishesUpdateDish = require("./services/dishesUpdateDish");
+var getAllDishes = require("./services/getAllDishes");
+var getCancelledOrders = require("./services/getCancelledOrders");
+var getCompletedOrders = require("./services/getCompletedOrders");
+var getNewOrders = require("./services/getNewOrders");
+var getOrderStatus = require("./services/getOrderStatus");
+var getOwnerCustomerDetails = require("./services/getOwnerCustomerDetails");
+var ordersNewOrderAdd = require("./services/ordersNewOrderAdd");
+var ordersNewOrderUpdate = require("./services/ordersNewOrderUpdate");
 
 function handleTopicRequest(topic_name, fname) {
-  //var topic_name = 'root_topic';
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
   console.log("server is running ");
@@ -17,7 +31,7 @@ function handleTopicRequest(topic_name, fname) {
     var data = JSON.parse(message.value);
 
     fname.handle_request(data.data, function (err, res) {
-      console.log("after handle" + res);
+      console.log("after handle ==> " + JSON.stringify(res));
       var payloads = [
         {
           topic: data.replyTo,
@@ -28,8 +42,12 @@ function handleTopicRequest(topic_name, fname) {
           partition: 0,
         },
       ];
+      console.log("Sending Payload ==> ", JSON.stringify(payloads));
       producer.send(payloads, function (err, data) {
-        console.log(data);
+        if (err) {
+          console.log("Sending back response error ==> ", JSON.stringify(err));
+        }
+        console.log("Sent response ==> ", data);
       });
       return;
     });
@@ -40,3 +58,19 @@ function handleTopicRequest(topic_name, fname) {
 //second argument is a function that will handle this topic request
 // handleTopicRequest("post_book",Books)
 handleTopicRequest("signIn", signIn);
+handleTopicRequest("signUpCustomer", signUpCustomer);
+handleTopicRequest("signUpOwner", signUpOwner);
+handleTopicRequest("profileCustomer", profileCustomer);
+handleTopicRequest("profileOwner", profileOwner);
+handleTopicRequest("getOwnerRestaurantDetails", getOwnerRestaurantDetails);
+
+handleTopicRequest("dishesAddDish", dishesAddDish);
+handleTopicRequest("dishesUpdateDish", dishesUpdateDish);
+handleTopicRequest("getAllDishes", getAllDishes);
+handleTopicRequest("getCancelledOrders", getCancelledOrders);
+handleTopicRequest("getCompletedOrders", getCompletedOrders);
+handleTopicRequest("getNewOrders", getNewOrders);
+handleTopicRequest("getOrderStatus", getOrderStatus);
+handleTopicRequest("getOwnerCustomerDetails", getOwnerCustomerDetails);
+handleTopicRequest("ordersNewOrderAdd", ordersNewOrderAdd);
+handleTopicRequest("ordersNewOrderUpdate", ordersNewOrderUpdate);

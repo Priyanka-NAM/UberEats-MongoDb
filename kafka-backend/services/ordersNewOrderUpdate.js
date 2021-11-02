@@ -1,0 +1,54 @@
+const { OrderDetails } = require("../Models/Models");
+
+const addOrderIds = (orders) => {
+  const modifiedOrders = orders.map((order) => {
+    let modifiedOrder = JSON.parse(JSON.stringify(order));
+    modifiedOrder.order_id = order._id;
+    return modifiedOrder;
+  });
+  return modifiedOrders;
+};
+
+function handle_request(msg, callback) {
+  const OrderUpdate = {
+    $set: {
+      order_status: req.body.order_status,
+      delivery_status: req.body.delivery_status,
+      restaurant_id: req.body.restaurant_id,
+      order_id: req.body.order_id,
+    },
+  };
+  OrderDetails.updateOne(
+    { _id: req.body.order_id },
+    OrderUpdate,
+    (error, result) => {
+      if (error) {
+        callback(null, { errCode: 400,data: { status: "NO_ORDER_ID" }});
+        return;
+      }
+      OrderDetails.findOne({ _id: req.body.order_id }, (err, data) => {
+        if (err) {
+          callback(null, { errCode: 400, data: {status: "NO_RESTAURANT_ID" }});
+          return;
+        }
+        OrderDetails.find(
+          { restaurant_id: req.body.restaurant_id },
+          (finderr, allorders) => {
+            if (finderr) {
+              callback(null, { errCode: 400, data: {status: "CUSTOMER_ID_NULL"} });
+              return;
+            }
+            callback(null, {
+              data: {
+                status: "UPDATED_ORDER",
+                orders: addOrderIds(allorders),
+              },
+            });
+          }
+        );
+      });
+    }
+  );
+}
+
+exports.handle_request = handle_request;
