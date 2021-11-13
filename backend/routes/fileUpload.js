@@ -44,7 +44,9 @@ app.post(
   async (req, res, next) => {
     upload(req, res, (err) => {
       if (!err) {
-        res.end(req.file.path);
+        if (req.file && req.file.path) {
+          res.end(req.file.path);
+        }
       } else {
         console.log("Error!");
       }

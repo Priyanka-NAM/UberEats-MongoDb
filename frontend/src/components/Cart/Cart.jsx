@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/no-did-update-set-state */
 /* eslint-disable react/forbid-prop-types */
@@ -12,6 +13,7 @@ import PropTypes from "prop-types";
 import CartItemRow from "./CartItemRow";
 import mainstyle from "../Home/HomeIcons/HeaderStyle";
 import "../Styles/Header.css";
+import { deleteCartItem } from "../../Actions/CartActions";
 
 class Cart extends React.Component {
   constructor(props) {
@@ -49,6 +51,15 @@ class Cart extends React.Component {
     });
   };
 
+  handleItemDelete = (itemIndex) => {
+    const { cartItemCount } = this.state;
+    this.setState({
+      cartItemCount: cartItemCount - 1,
+    });
+
+    this.props.deleteCartItem(itemIndex);
+  };
+
   render() {
     const { showModal, cartItemCount } = this.state;
     const { restaurantName, cartItems } = this.props;
@@ -59,7 +70,7 @@ class Cart extends React.Component {
     let totalItems = 0;
     if (cartItems) {
       totalItems = cartItems.length;
-      cartRows = cartItems.map((cartitem) => {
+      cartRows = cartItems.map((cartitem, index) => {
         totalCartValue += parseFloat(cartitem.price, 10);
         let eachitemprice = parseFloat(cartitem.price, 10);
         eachitemprice = eachitemprice.toFixed(2);
@@ -68,6 +79,8 @@ class Cart extends React.Component {
             quantity={cartitem.quantity}
             dishtitle={cartitem.title}
             totaldishprice={eachitemprice.toString()}
+            itemIndex={index}
+            handleDelete={this.handleItemDelete}
           />
         );
       });
@@ -178,6 +191,7 @@ class Cart extends React.Component {
 Cart.propTypes = {
   restaurantName: PropTypes.string.isRequired,
   cartItems: PropTypes.array.isRequired,
+  deleteCartItem: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -185,4 +199,4 @@ const mapStateToProps = (state) => ({
   cartItems: state.cartDetails.items,
 });
 
-export default connect(mapStateToProps, null)(Cart);
+export default connect(mapStateToProps, { deleteCartItem })(Cart);

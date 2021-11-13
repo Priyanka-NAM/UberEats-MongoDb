@@ -23,6 +23,7 @@ var ordersNewOrderUpdate = require("./services/ordersNewOrderUpdate");
 var getAllRestaurants = require("./services/getAllRestaurants");
 var getRestaurantDetails = require("./services/getRestaurantDetails");
 var getFavouriteRestaurants = require("./services/getFavouriteRestaurants");
+var updateFavoriteRestaurants = require("./services/updateFavoriteRestaurants");
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -81,3 +82,4 @@ handleTopicRequest("ordersNewOrderUpdate", ordersNewOrderUpdate);
 handleTopicRequest("getAllRestaurants", getAllRestaurants);
 handleTopicRequest("getRestaurantDetails", getRestaurantDetails);
 handleTopicRequest("getFavouriteRestaurants", getFavouriteRestaurants);
+handleTopicRequest("updateFavoriteRestaurants", updateFavoriteRestaurants);

@@ -214,9 +214,22 @@ const Dishes = new Schema({
   update_time: { type: Date, default: Date.now() },
 });
 
+const Favorites = new Schema({
+  customer_id: {
+    type: String,
+  },
+  restaurant_id: {
+    type: String,
+  },
+  is_fav: {
+    type: String,
+  },
+});
+
 module.exports = {
   CustomerDetails: model("CustomerDetails", CustomerDetails),
   OrderDetails: model("OrderDetails", OrderDetails),
   RestaurantDetails: model("RestaurantDetails", RestaurantDetails),
   Dishes: model("Dishes", Dishes),
+  Favorites: model("Favorites", Favorites),
 };

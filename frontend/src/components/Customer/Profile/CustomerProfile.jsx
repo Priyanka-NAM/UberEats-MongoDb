@@ -65,6 +65,7 @@ class CustomerProfile extends Component {
   handleChangesSubmit = (e) => {
     e.preventDefault();
     const details = { ...this.state };
+    details.profile_pic_file_path = this.props.profile_pic_file_path;
     this.props.updateCustomer(details);
   };
 

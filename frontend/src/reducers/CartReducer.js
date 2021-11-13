@@ -1,6 +1,11 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-param-reassign */
-import { CART_ADD, CART_EMPTY } from "../Actions/types";
+import {
+  CART_ADD,
+  CART_EMPTY,
+  CART_ITEM_UPDATE,
+  CART_ITEM_DELETE,
+} from "../Actions/types";
 
 const intitalState = {
   restaurantName: "",
@@ -65,6 +70,29 @@ export default (state = intitalState, action) => {
       };
     case CART_EMPTY:
       return intitalState;
+    case CART_ITEM_UPDATE:
+      const prevItems = state.items;
+      const updatedItems = prevItems.map((item) => {
+        if (item.title === action.payload.dishtitle) {
+          item.quantity = action.payload.updateQuantity;
+          item.price = (
+            parseInt(item.quantity, 10) * parseFloat(item.dishDetails.price)
+          ).toFixed(2);
+        }
+        return item;
+      });
+      return {
+        ...state,
+        items: updatedItems,
+      };
+    case CART_ITEM_DELETE:
+      const delItems = state.items;
+      delItems.splice(action.payload.itemIndex, 1);
+      return {
+        ...state,
+        items: delItems,
+      };
+
     default:
       return state;
   }

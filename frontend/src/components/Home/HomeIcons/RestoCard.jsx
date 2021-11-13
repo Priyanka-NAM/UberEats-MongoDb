@@ -60,8 +60,8 @@ class RestoCard extends Component {
     }
     const newisFav = isFav ? false : true;
     const { restaurant } = this.props;
-    const restaurantId = restaurant.restaurant_id;
-    const updateFavInput = { restaurantId, newisFav };
+    const restaurentId = restaurant.restaurant_id;
+    const updateFavInput = { restaurentId, newisFav };
     this.props.updateFav(updateFavInput);
   };
 

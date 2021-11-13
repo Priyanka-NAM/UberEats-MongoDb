@@ -53,6 +53,7 @@ class OwnerProfile extends Component {
   handleChangesSubmit = (e) => {
     e.preventDefault();
     const details = { ...this.state };
+    details.image_file_path = this.props.image_file_path;
     this.props.updateOwner(details);
   };
 

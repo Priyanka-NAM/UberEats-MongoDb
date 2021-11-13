@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import {
   CUSTOMER_SIGNUP,
   CUSTOMER_SIGNUP_FAILURE,
@@ -83,12 +84,22 @@ export default (state = intitalState, action) => {
     case CUSTOMER_FAVORITES_FAILURE:
       return {
         ...state,
-        fav: action.payload,
+        // fav: action.payload,
       };
     case UPDATE_FAV:
+      let filteredRestaurants = filterDeletedFavs(
+        state.fav.favRestaurants,
+        action.payload.favId
+      );
+      if (!filteredRestaurants) {
+        filteredRestaurants = state.fav.favRestaurants;
+      }
       return {
         ...state,
-        fav: filterDeletedFavs(state.fav, action.payload.favId),
+        fav: {
+          status: "FAV_RESTAURANTS",
+          favRestaurants: filteredRestaurants,
+        },
       };
     case UPDATE_FAV_FAILURE:
       return {

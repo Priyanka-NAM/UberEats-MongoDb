@@ -151,7 +151,9 @@ export const updateFav = (updateFavInput) => async (dispatch) => {
       type: UPDATE_FAV,
       payload: response.data,
     });
+    return;
   } catch (err) {
+    console.log("Update Fav Failure ===> ", err);
     dispatch({
       type: UPDATE_FAV_FAILURE,
       payload: err.response,

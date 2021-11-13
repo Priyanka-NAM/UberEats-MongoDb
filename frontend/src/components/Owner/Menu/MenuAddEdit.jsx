@@ -80,9 +80,8 @@ class MenuAddEdit extends Component {
       dishtype,
       ingredients,
       price,
-      imageFilePath,
     } = this.state;
-
+    const { imageFilePath } = this.props;
     // isActive (should be '0' for deleting)
     const dishdata = {
       dishId,
