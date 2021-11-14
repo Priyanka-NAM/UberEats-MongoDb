@@ -105,7 +105,7 @@ class CustomerProfile extends Component {
       showAlert,
     } = this.state;
     let profile_pic_file_path;
-    if (this.props.profile_pic_file_path) {
+    if (this.props.profile_pic_file_path !== "") {
       profile_pic_file_path = this.props.profile_pic_file_path;
     } else {
       profile_pic_file_path = this.props.customerDetails.profile_pic_file_path;
