@@ -101,16 +101,18 @@ class CustomerProfile extends Component {
       password,
       country,
       zipcode,
-      profile_pic_file_path,
+      // profile_pic_file_path,
       showAlert,
     } = this.state;
-    // let profile_pic_file_path = "undefined";
-    // // if (this.props.profile_pic_file_path !== "") {
-    // //   profile_pic_file_path = this.props.profile_pic_file_path;
-    // // } else {
-    // profile_pic_file_path = this.props.customerDetails.profile_pic_file_path;
-    // // }
-    // console.log("profile_pic_file_path", profile_pic_file_path);
+    let profile_pic_file_path = "undefined";
+    if (this.props.profile_pic_file_path !== "") {
+      profile_pic_file_path = this.props.profile_pic_file_path;
+    }
+    if (profile_pic_file_path === "" || !profile_pic_file_path) {
+      const user = JSON.parse(localStorage.getItem("user"));
+      profile_pic_file_path = user.profile_pic_file_path;
+    }
+    console.log("profile_pic_file_path", profile_pic_file_path);
 
     const src = `${profile_pic_file_path}`;
 
