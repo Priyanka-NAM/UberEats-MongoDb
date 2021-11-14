@@ -17,16 +17,27 @@ import {
 } from "react-bootstrap";
 import { BiX } from "react-icons/bi";
 import PropTypes from "prop-types";
+import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 
 import { connect } from "react-redux";
 import { ownerNewOrdersUpdate } from "../../../Actions/OwnerActions";
-import { customerOrders } from "../../../Actions/CustomerActions";
+import {
+  customerOrders,
+  updatePageOrderSize,
+  updateCurrentPageNumber,
+} from "../../../Actions/CustomerActions";
 import Header from "../../Home/HomeIcons/Header";
 
 class CustomerOrders extends Component {
   constructor(props) {
     super(props);
-    this.state = { showModal: false };
+    this.state = {
+      showModal: false,
+      paginationDetails: {
+        pageSize: 5,
+        currentPageNumber: 0,
+      },
+    };
   }
 
   componentDidMount() {
@@ -34,11 +45,16 @@ class CustomerOrders extends Component {
   }
 
   componentDidUpdate(prevprops) {
-    const { orders } = this.props;
+    const { orders, paginationDetails } = this.props;
     if (orders !== prevprops.orders) {
       this.setState({
         filterdOrders: orders,
         orders,
+      });
+    }
+    if (paginationDetails !== prevprops.paginationDetails) {
+      this.setState({
+        paginationDetails,
       });
     }
   }
@@ -62,6 +78,7 @@ class CustomerOrders extends Component {
       delivery_status: "Cancel",
       order_status: "Cancelled",
     });
+    this.props.customerOrders();
   };
 
   handleSelect = (e) => {
@@ -74,8 +91,56 @@ class CustomerOrders extends Component {
         (order) => order.delivery_status === filterValue
       );
     }
+
+    this.props.updateCurrentPageNumber(0);
     this.setState({
       filterdOrders,
+      paginationDetails: {
+        currentPageNumber: 0,
+      },
+    });
+  };
+
+  // Pagination Drop Down Handler
+  handlePageSizeDropDown = (e) => {
+    let pageSize;
+    if (e.target.value === "Page Size") {
+      pageSize = 5;
+    } else {
+      pageSize = parseInt(e.target.value, 10);
+    }
+    this.props.updatePageOrderSize(pageSize);
+    this.setState({
+      paginationDetails: {
+        pageSize: pageSize,
+      },
+    });
+  };
+
+  // Page Number Decrement Handler
+  handlePageNumberDecrease = () => {
+    let { currentPageNumber } = this.state.paginationDetails;
+    if (currentPageNumber > 0) currentPageNumber -= 1;
+    this.props.updateCurrentPageNumber(currentPageNumber);
+    this.setState({
+      paginationDetails: {
+        currentPageNumber: currentPageNumber,
+      },
+    });
+  };
+
+  // Page Number Increment Handler
+  handlePageNumberIncrease = () => {
+    let { currentPageNumber } = this.state.paginationDetails;
+    const { pageSize } = this.state.paginationDetails;
+    const { filterdOrders } = this.state;
+    if (filterdOrders.length > (currentPageNumber + 1) * pageSize)
+      currentPageNumber += 1;
+    this.props.updateCurrentPageNumber(currentPageNumber);
+    this.setState({
+      paginationDetails: {
+        currentPageNumber: currentPageNumber,
+      },
     });
   };
 
@@ -115,6 +180,16 @@ class CustomerOrders extends Component {
       showModal: true,
       currentOrder: order,
     });
+
+  paginateFilteredOrders = (filterdorders) => {
+    const { paginationDetails } = this.state;
+    const { pageSize } = paginationDetails;
+    const currPageNumber = paginationDetails.currentPageNumber;
+    return filterdorders.slice(
+      pageSize * currPageNumber,
+      pageSize * (currPageNumber + 1)
+    );
+  };
 
   createMenuCardComps = (filterdorders) => {
     const { orders } = this.state;
@@ -373,11 +448,19 @@ class CustomerOrders extends Component {
   }
 
   render() {
-    const { showModal, filterdOrders, orders, currentOrder } = this.state;
+    const {
+      showModal,
+      filterdOrders,
+      orders,
+      currentOrder,
+      paginationDetails,
+    } = this.state;
+    const { currentPageNumber, pageSize } = paginationDetails;
     let orderComps = null;
     let modalComps = null;
     if (orders && filterdOrders) {
-      orderComps = this.createMenuCardComps(filterdOrders);
+      const paginatedOrders = this.paginateFilteredOrders(filterdOrders);
+      orderComps = this.createMenuCardComps(paginatedOrders);
     }
     console.log("Order Comps ", orderComps);
     if (!orderComps || orderComps.length === 0) {
@@ -394,7 +477,7 @@ class CustomerOrders extends Component {
       <div style={{ marginLeft: "1%", height: "100vh", overflow: "scroll" }}>
         <Header />
         <Container style={{ marginLeft: "1%" }} fluid>
-          <Row>
+          <Row style={{ display: "flex", justifyContent: "flex-end" }}>
             <Col>
               <h1>Past Orders</h1>
             </Col>
@@ -420,6 +503,54 @@ class CustomerOrders extends Component {
                 <option value='Picked up'>Picked up</option>
               </Form.Select>
             </Col>
+            <Col style={{ width: "200%" }}>
+              <Form.Select
+                name='page_size'
+                style={{
+                  width: "60%",
+                  height: "3.5rem",
+                  fontSize: "20px",
+                  fontFamily: "sans-serif",
+                  fontWeight: "550",
+                }}
+                onChange={this.handlePageSizeDropDown}
+                required>
+                <option>Page Size</option>
+                <option value={2}> 2 </option>
+                <option value={5}> 5 </option>
+                <option value={10}> 10 </option>
+              </Form.Select>
+            </Col>
+            <Col
+              style={{
+                paddingLeft: "0",
+                paddingRight: "0",
+                margin: "0",
+                width: "20%",
+              }}>
+              <AiFillCaretLeft
+                size='35px'
+                style={{ color: "lightgrey" }}
+                onClick={this.handlePageNumberDecrease}
+              />
+            </Col>
+            <Col style={{ paddingLeft: "0", paddingRight: "0", margin: "0" }}>
+              <h5
+                style={{
+                  fontSize: "20px",
+                  fontFamily: "UberMove, sans-serif",
+                  fontWeight: "500",
+                }}>
+                {currentPageNumber + 1}
+              </h5>
+            </Col>
+            <Col style={{ paddingLeft: "0", paddingRight: "0", margin: "0" }}>
+              <AiFillCaretRight
+                size='35px'
+                style={{ color: "lightgrey" }}
+                onClick={this.handlePageNumberIncrease}
+              />
+            </Col>
           </Row>
           <br />
           <br />
@@ -435,13 +566,19 @@ CustomerOrders.propTypes = {
   customerOrders: PropTypes.func.isRequired,
   orders: PropTypes.object.isRequired,
   ownerNewOrdersUpdate: PropTypes.func.isRequired,
+  updatePageOrderSize: PropTypes.func.isRequired,
+  updateCurrentPageNumber: PropTypes.func.isRequired,
+  paginationDetails: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   orders: state.customer.orders,
+  paginationDetails: state.customer.pagination,
 });
 
 export default connect(mapStateToProps, {
   customerOrders,
   ownerNewOrdersUpdate,
+  updatePageOrderSize,
+  updateCurrentPageNumber,
 })(CustomerOrders);

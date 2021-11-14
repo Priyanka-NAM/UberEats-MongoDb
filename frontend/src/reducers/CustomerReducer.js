@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-case-declarations */
 import {
   CUSTOMER_SIGNUP,
@@ -13,6 +14,8 @@ import {
   CUSTOMER_FAVORITES_FAILURE,
   UPDATE_FAV,
   UPDATE_FAV_FAILURE,
+  UPDATE_ORDER_PAGE_SIZE,
+  UPDATE_ORDER_PAGE_NUMBER,
 } from "../Actions/types";
 
 const intitalState = {
@@ -21,6 +24,10 @@ const intitalState = {
   neworder: {},
   fav: {},
   headerUserLocation: {},
+  pagination: {
+    pageSize: 5,
+    currentPageNumber: 0,
+  },
 };
 
 const filterDeletedFavs = (favs, favId) =>
@@ -104,6 +111,23 @@ export default (state = intitalState, action) => {
     case UPDATE_FAV_FAILURE:
       return {
         ...state,
+      };
+    case UPDATE_ORDER_PAGE_SIZE:
+      return {
+        ...state,
+        pagination: {
+          pageSize: action.payload,
+          currentPageNumber: 0,
+        },
+      };
+    case UPDATE_ORDER_PAGE_NUMBER:
+      const currPageSize = state.pagination.pageSize;
+      return {
+        ...state,
+        pagination: {
+          pageSize: currPageSize,
+          currentPageNumber: action.payload,
+        },
       };
     default:
       return state;

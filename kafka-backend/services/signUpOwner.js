@@ -18,6 +18,7 @@ function handle_request(msg, callback) {
     restaurant_state: msg.restaurant_state,
     restaurant_country: msg.restaurant_country,
     restaurant_zipcode: msg.restaurant_zipcode,
+    delivery_type: "Both",
   });
   RestaurantDetails.findOne({ email_id: email }, (error, result) => {
     if (error) {

@@ -11,6 +11,81 @@ const {
   Favorites,
 } = require("../Models/Models");
 
+// router.get("/restaurantsearch/:search_input", (req, res) => {
+//   const sql = `CALL search_restaurants("${req.params.search_input}");`;
+//   console.log(sql);
+//   db.query(sql, (err, result) => {
+//     try {
+//       if (err) {
+//         throw err;
+//       }
+//       if (!result || result.length === 0) {
+//         res.writeHead(500, {
+//           "Content-Type": "text/plain",
+//         });
+//         res.send({
+//           status: "Result from Db Undefined",
+//         });
+//         return;
+//       }
+
+//       if (result[0].length === 0) {
+//         res.status(400).send({ status: "RESTAURANTS_NOT_FOUND" });
+//         return;
+//       }
+//       res.send({
+//         status: "ALL_RESTAURANTS",
+//         allRestaurants: result[0],
+//       });
+//     } catch (error) {
+//       res.writeHead(500, {
+//         "Content-Type": "text/plain",
+//       });
+//       res.end(JSON.stringify(error));
+//     }
+//   });
+// });
+
+app.get(
+  "/ubereats/customerrestaurant/restaurantsearch/:search_input",
+  checkAuth,
+  async function (req, res) {
+    kafka.make_request(
+      "getSearchRestaurants",
+      req.params,
+      function (err, results) {
+        console.log(
+          "getSearch Restaurants response from Kafka Backend ",
+          results
+        );
+        if (err) {
+          res.json({
+            status: "error",
+            msg: "System Error, Try Again.",
+          });
+          return;
+        } else {
+          if (results.errCode) {
+            const errCode = results.errCode;
+            if (errCode === 500) {
+              res.writeHead(500, {
+                "Content-Type": "text/plain",
+              });
+              res.end();
+            } else if (errCode === 400) {
+              res.status(400).send(results.data);
+            }
+            return;
+          } else {
+            res.send(results.data);
+            return;
+          }
+        }
+      }
+    );
+  }
+);
+
 // app.get(
 //   "/ubereats/customerrestaurant/allrestaurants",
 //   checkAuth,

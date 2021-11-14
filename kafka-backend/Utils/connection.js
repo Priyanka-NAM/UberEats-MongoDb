@@ -7,6 +7,7 @@ const mongoDB = config.mongoURI;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  maxPoolSize: 20,
 };
 
 mongoose.connect(mongoDB, options, (err, res) => {

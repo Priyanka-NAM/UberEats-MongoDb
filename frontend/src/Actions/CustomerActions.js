@@ -13,6 +13,8 @@ import {
   CUSTOMER_FAVORITES_FAILURE,
   UPDATE_FAV,
   UPDATE_FAV_FAILURE,
+  UPDATE_ORDER_PAGE_SIZE,
+  UPDATE_ORDER_PAGE_NUMBER,
 } from "./types";
 import backendServer from "../backEndConfig";
 import { getToken } from "../components/Service/authService";
@@ -160,3 +162,9 @@ export const updateFav = (updateFavInput) => async (dispatch) => {
     });
   }
 };
+
+export const updatePageOrderSize = (pagesize) => (dispatch) =>
+  dispatch({ type: UPDATE_ORDER_PAGE_SIZE, payload: pagesize });
+
+export const updateCurrentPageNumber = (updatedPageNumber) => (dispatch) =>
+  dispatch({ type: UPDATE_ORDER_PAGE_NUMBER, payload: updatedPageNumber });

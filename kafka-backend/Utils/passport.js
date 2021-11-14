@@ -17,7 +17,7 @@ passport.use(
     if (isOwner === 1) {
       RestaurantDetails.findOne({ email_id: email_id }, (err, results) => {
         if (err) {
-          console.log("Error ====== >> ", err);
+          // console.log("Error ====== >> ", err);
           return callback(err, false);
         }
         if (results) {
@@ -29,7 +29,7 @@ passport.use(
     } else {
       CustomerDetails.findOne({ email_id: email_id }, (err, results) => {
         if (err) {
-          console.log("Error ====== >> ", err);
+          // console.log("Error ====== >> ", err);
           return callback(err, false);
         }
         if (results) {

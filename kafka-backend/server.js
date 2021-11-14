@@ -21,6 +21,7 @@ var getOwnerCustomerDetails = require("./services/getOwnerCustomerDetails");
 var ordersNewOrderAdd = require("./services/ordersNewOrderAdd");
 var ordersNewOrderUpdate = require("./services/ordersNewOrderUpdate");
 var getAllRestaurants = require("./services/getAllRestaurants");
+var getSearchRestaurants = require("./services/getSearchRestaurants");
 var getRestaurantDetails = require("./services/getRestaurantDetails");
 var getFavouriteRestaurants = require("./services/getFavouriteRestaurants");
 var updateFavoriteRestaurants = require("./services/updateFavoriteRestaurants");
@@ -28,14 +29,14 @@ var updateFavoriteRestaurants = require("./services/updateFavoriteRestaurants");
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
-  console.log("server is running ");
+  // console.log("server is running ");
   consumer.on("message", function (message) {
     console.log("message received for " + topic_name + " ", fname);
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
     fname.handle_request(data.data, function (err, res) {
-      console.log("after handle ==> " + JSON.stringify(res));
+      console.log("after handle" + res);
       var payloads = [
         {
           topic: data.replyTo,
@@ -46,12 +47,11 @@ function handleTopicRequest(topic_name, fname) {
           partition: 0,
         },
       ];
-      console.log("Sending Payload ==> ", JSON.stringify(payloads));
       producer.send(payloads, function (err, data) {
         if (err) {
-          console.log("Sending back response error ==> ", JSON.stringify(err));
+          // console.log("Sending back response error ==> ", JSON.stringify(err));
         }
-        console.log("Sent response ==> ", data);
+        console.log(data);
       });
       return;
     });
@@ -80,6 +80,7 @@ handleTopicRequest("ordersNewOrderAdd", ordersNewOrderAdd);
 handleTopicRequest("ordersNewOrderUpdate", ordersNewOrderUpdate);
 
 handleTopicRequest("getAllRestaurants", getAllRestaurants);
+handleTopicRequest("getSearchRestaurants", getSearchRestaurants);
 handleTopicRequest("getRestaurantDetails", getRestaurantDetails);
 handleTopicRequest("getFavouriteRestaurants", getFavouriteRestaurants);
 handleTopicRequest("updateFavoriteRestaurants", updateFavoriteRestaurants);

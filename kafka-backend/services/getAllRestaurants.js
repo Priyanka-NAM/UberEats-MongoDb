@@ -13,6 +13,7 @@ function handle_request(msg, callback) {
     const modifiedRestaurantsData = restaurantsdata.map((restaurant) => {
       let modifiedRestaurant = JSON.parse(JSON.stringify(restaurant));
       modifiedRestaurant.restaurant_id = restaurant._id;
+      modifiedRestaurant.is_search_result = 1;
       return modifiedRestaurant;
     });
     callback(null, {

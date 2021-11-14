@@ -23,19 +23,25 @@ function handle_request(msg, callback) {
     OrderUpdate,
     (error, result) => {
       if (error) {
-        callback(null, { errCode: 400,data: { status: "NO_ORDER_ID" }});
+        callback(null, { errCode: 400, data: { status: "NO_ORDER_ID" } });
         return;
       }
       OrderDetails.findOne({ _id: msg.order_id }, (err, data) => {
         if (err) {
-          callback(null, { errCode: 400, data: {status: "NO_RESTAURANT_ID" }});
+          callback(null, {
+            errCode: 400,
+            data: { status: "NO_RESTAURANT_ID" },
+          });
           return;
         }
         OrderDetails.find(
-          { restaurant_id: msg.restaurant_id },
+          { restaurant_id: msg.restaurant_id, order_status: "Active" },
           (finderr, allorders) => {
             if (finderr) {
-              callback(null, { errCode: 400, data: {status: "CUSTOMER_ID_NULL"} });
+              callback(null, {
+                errCode: 400,
+                data: { status: "CUSTOMER_ID_NULL" },
+              });
               return;
             }
             callback(null, {
