@@ -101,7 +101,7 @@ class CustomerProfile extends Component {
       password,
       country,
       zipcode,
-      profile_pic_file_path
+      profile_pic_file_path,
       showAlert,
     } = this.state;
     // let profile_pic_file_path = "undefined";
