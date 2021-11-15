@@ -110,8 +110,11 @@ class CustomerProfile extends Component {
     // }
     // if (profile_pic_file_path === "" || !profile_pic_file_path) {
     const user = JSON.parse(localStorage.getItem("user"));
-    const { profile_pic_file_path } = user;
+    let { profile_pic_file_path } = user;
     // }
+    if (this.props.profile_pic_file_path !== "") {
+      profile_pic_file_path = this.props.profile_pic_file_path;
+    }
     console.log("profile_pic_file_path => ", profile_pic_file_path);
 
     const src = profile_pic_file_path;
