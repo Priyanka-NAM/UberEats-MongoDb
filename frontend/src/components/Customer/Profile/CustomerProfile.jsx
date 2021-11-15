@@ -104,7 +104,7 @@ class CustomerProfile extends Component {
       // profile_pic_file_path,
       showAlert,
     } = this.state;
-    let profile_pic_file_path = "undefined";
+    let profile_pic_file_path;
     if (this.props.profile_pic_file_path !== "") {
       profile_pic_file_path = this.props.profile_pic_file_path;
     }
