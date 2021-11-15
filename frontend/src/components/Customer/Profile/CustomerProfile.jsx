@@ -104,17 +104,17 @@ class CustomerProfile extends Component {
       // profile_pic_file_path,
       showAlert,
     } = this.state;
-    let profile_pic_file_path;
-    if (this.props.profile_pic_file_path !== "") {
-      profile_pic_file_path = this.props.profile_pic_file_path;
-    }
-    if (profile_pic_file_path === "" || !profile_pic_file_path) {
-      const user = JSON.parse(localStorage.getItem("user"));
-      profile_pic_file_path = user.profile_pic_file_path;
-    }
-    console.log("profile_pic_file_path", profile_pic_file_path);
+    // let profile_pic_file_path;
+    // if (this.props.profile_pic_file_path !== "") {
+    //   profile_pic_file_path = this.props.profile_pic_file_path;
+    // }
+    // if (profile_pic_file_path === "" || !profile_pic_file_path) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { profile_pic_file_path } = user;
+    // }
+    console.log("profile_pic_file_path => ", profile_pic_file_path);
 
-    const src = `${profile_pic_file_path}`;
+    const src = profile_pic_file_path;
 
     const { UpdateStatus } = this.props;
 
