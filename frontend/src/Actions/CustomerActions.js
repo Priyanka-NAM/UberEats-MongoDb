@@ -9,6 +9,8 @@ import {
   CUSTOMER_ORDERS_FAILURE,
   CUSTOMER_NEWORDER,
   CUSTOMER_NEWORDER_FAILURE,
+  CUSTOMER_ORDER_UPDATE,
+  CUSTOMER_ORDER_UPDATE_FAILURE,
   CUSTOMER_FAVORITES,
   CUSTOMER_FAVORITES_FAILURE,
   UPDATE_FAV,
@@ -112,6 +114,40 @@ export const customerOrderPlaced = (customerNewOrder) => async (dispatch) => {
     });
   }
 };
+
+export const customerOrderUpdate =
+  (updateOrderDetails) => async (dispatch) => {
+    const { customer_id: customerId, name: customerName } = JSON.parse(
+      localStorage.getItem("user")
+    );
+    console.log(" customerId: ", customerId);
+    // if (!restaurantId) return;
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common["x-auth-token"] = getToken();
+    // eslint-disable-next-line no-param-reassign
+    updateOrderDetails.customer_id = customerId;
+    axios
+      .post(
+        `${backendServer}/ubereats/orders/customer/orderupdate`,
+        updateOrderDetails
+      )
+      .then((response) => {
+        if (response.data.status === "CUSTOMER_UPDATED_ORDER") {
+          dispatch({
+            type: CUSTOMER_ORDER_UPDATE,
+            payload: response.data.orders,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          dispatch({
+            type: CUSTOMER_ORDER_UPDATE_FAILURE,
+            payload: error.response.data,
+          });
+        }
+      });
+  };
 
 export const customerFav = () => async (dispatch) => {
   const { customer_id: customerId } = JSON.parse(localStorage.getItem("user"));

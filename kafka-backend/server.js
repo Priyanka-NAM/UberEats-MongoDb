@@ -20,6 +20,7 @@ var getOrderStatus = require("./services/getOrderStatus");
 var getOwnerCustomerDetails = require("./services/getOwnerCustomerDetails");
 var ordersNewOrderAdd = require("./services/ordersNewOrderAdd");
 var ordersNewOrderUpdate = require("./services/ordersNewOrderUpdate");
+var customerOrderUpdate = require("./services/customerOrderUpdate");
 var getAllRestaurants = require("./services/getAllRestaurants");
 var getSearchRestaurants = require("./services/getSearchRestaurants");
 var getRestaurantDetails = require("./services/getRestaurantDetails");
@@ -80,6 +81,7 @@ handleTopicRequest("getOrderStatus", getOrderStatus);
 handleTopicRequest("getOwnerCustomerDetails", getOwnerCustomerDetails);
 handleTopicRequest("ordersNewOrderAdd", ordersNewOrderAdd);
 handleTopicRequest("ordersNewOrderUpdate", ordersNewOrderUpdate);
+handleTopicRequest("customerOrderUpdate", customerOrderUpdate);
 
 handleTopicRequest("getAllRestaurants", getAllRestaurants);
 handleTopicRequest("getSearchRestaurants", getSearchRestaurants);

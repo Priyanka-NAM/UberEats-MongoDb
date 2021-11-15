@@ -25,6 +25,7 @@ import {
   customerOrders,
   updatePageOrderSize,
   updateCurrentPageNumber,
+  customerOrderUpdate,
 } from "../../../Actions/CustomerActions";
 import Header from "../../Home/HomeIcons/Header";
 
@@ -72,7 +73,7 @@ class CustomerOrders extends Component {
   };
 
   handleCancel = (order) => {
-    this.props.ownerNewOrdersUpdate({
+    this.props.customerOrderUpdate({
       order_id: order.order_id,
       restaurant_id: order.restaurant_id,
       delivery_status: "Cancel",
@@ -565,7 +566,7 @@ class CustomerOrders extends Component {
 CustomerOrders.propTypes = {
   customerOrders: PropTypes.func.isRequired,
   orders: PropTypes.object.isRequired,
-  ownerNewOrdersUpdate: PropTypes.func.isRequired,
+  customerOrderUpdate: PropTypes.func.isRequired,
   updatePageOrderSize: PropTypes.func.isRequired,
   updateCurrentPageNumber: PropTypes.func.isRequired,
   paginationDetails: PropTypes.object.isRequired,
@@ -578,7 +579,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   customerOrders,
-  ownerNewOrdersUpdate,
+  customerOrderUpdate,
   updatePageOrderSize,
   updateCurrentPageNumber,
 })(CustomerOrders);

@@ -10,6 +10,8 @@ import {
   USER_SIGNIN_SUCCESS,
   CUSTOMER_NEWORDER,
   CUSTOMER_NEWORDER_FAILURE,
+  CUSTOMER_ORDER_UPDATE,
+  CUSTOMER_ORDER_UPDATE_FAILURE,
   CUSTOMER_FAVORITES,
   CUSTOMER_FAVORITES_FAILURE,
   UPDATE_FAV,
@@ -79,6 +81,16 @@ export default (state = intitalState, action) => {
         neworder: action.payload,
       };
     case CUSTOMER_NEWORDER_FAILURE:
+      return {
+        ...state,
+        neworder: action.payload,
+      };
+    case CUSTOMER_ORDER_UPDATE:
+      return {
+        ...state,
+        neworder: action.payload,
+      };
+    case CUSTOMER_ORDER_UPDATE_FAILURE:
       return {
         ...state,
         neworder: action.payload,
