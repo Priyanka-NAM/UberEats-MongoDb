@@ -11,7 +11,7 @@ import LandingPage from "../components/LandingPage/LandingPage";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-it("render correctly the Landing Page component", () => {
+it("render the Landing Page component correctly", () => {
   const LandingPageComponent = renderer
     .create(
       <Router>

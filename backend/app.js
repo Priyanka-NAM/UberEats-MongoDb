@@ -15,8 +15,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://3.15.190.156:3000",
-    // origin: "http://localhost:3000",
+    // origin: "http://3.15.190.156:3000",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -32,8 +32,8 @@ app.use(
 );
 
 app.use((res, req, next) => {
-  res.header("Access-Control-Allow-Origin", "http://3.15.190.156:3000");
-  // res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  // res.header("Access-Control-Allow-Origin", "http://3.15.190.156:3000");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
     "Access-Control-Allow-Headers",
     "Orgin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Headers, Access-Control-Request-Method, Access-Control-Request-Headers"

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 /* eslint-disable no-return-assign */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
@@ -33,12 +34,18 @@ class MenuAddEdit extends Component {
     if (this.props.currentDish !== prevProps.currentDish) {
       this.setStateFromProps(this.props);
     }
+    if (this.props.imageFilePath !== prevProps.imageFilePath) {
+      this.setState({
+        imageFilePath: this.props.imageFilePath,
+      });
+    }
   }
 
   handleAddSave = (e) => {
     const { visibilityCb, actionType } = this.props;
     e.preventDefault();
     console.log("Inside Handle Add Save ", this.state);
+    console.log("Inside Handle Add Save ", this.props);
 
     const {
       restaurentId,
@@ -50,6 +57,7 @@ class MenuAddEdit extends Component {
       price,
       imageFilePath,
     } = this.state;
+    // const { imageFilePath } = this.props;
 
     const dishdata = {
       restaurentId,

@@ -10,7 +10,7 @@ describe("Signin Testing Customer", () => {
   it("Incorrect Password", (done) => {
     agent
       .post("/ubereats/signin")
-      .send({ email: "jackson@gmail.com", password: "123456789" })
+      .send({ email: "sam@gmail.com", password: "1234567" })
       .then((res) => {
         expect(res.body).to.have.deep.property(
           "status",
@@ -26,7 +26,7 @@ describe("Signin Testing Customer", () => {
   it("User Does not exist", (done) => {
     agent
       .post("/ubereats/signin")
-      .send({ email: "user@sjsu.edu", password: "123456" })
+      .send({ email: "sam123@gmail.com", password: "123456" })
       .then((res) => {
         expect(res.body).to.deep.equal({ status: "Authentication Failed" });
         done();
@@ -39,7 +39,7 @@ describe("Signin Testing Customer", () => {
   it("Authentication and Signin Sucessfull", (done) => {
     agent
       .post("/ubereats/signin")
-      .send({ email: "jackson@gmail.com", password: "987654" })
+      .send({ email: "sam@gmail.com", password: "123456" })
       .then((res) => {
         expect(res.body).to.have.deep.property(
           "status",
@@ -59,7 +59,7 @@ describe("Restaurant Owner Sign up", () => {
       .post("/ubereats/signup/owner")
       .send({
         name: "Tommy's Thai",
-        email: "tommysthai@gmail.com",
+        email: "popeyes@gmail.com",
         password: "123456",
         description: "",
         restaurant_address_line_one: "9 Camino Real2",
@@ -119,12 +119,12 @@ describe("Restaurant Owner Sign up", () => {
 });
 
 const authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOnsic3RhdHVzIjoiU1VDQ0VTUyIsImlzX293bmVyIjowLCJuYW1lIjoiamFja3NvbiIsImVtYWlsX2lkIjoiamFja3NvbkBnbWFpbC5jb20iLCJjdXN0b21lcl9pZCI6NDgsInBhc3N3b3JkIjoiNmM0NGU1Y2QxN2YwMDE5YzY0YjA0MmU0YTc0NTQxMmEiLCJkYXRlX29mX2JpcnRoIjoiMjAyMS0xMC0xMiIsImFkZHJlc3NfbGluZV8xIjoiMTI2IEFtYXlsIERyIiwiY2l0eSI6IlN1bm55dmFsZSIsInN0YXRlIjoiQ2FsaWZvcm5pYSIsImNvdW50cnkiOiJVbml0ZWQgU3RhdGVzIiwiemlwY29kZSI6Ijk3NDUyIiwibmlja19uYW1lIjoiamFjayIsInByb2ZpbGVfcGljX2ZpbGVfcGF0aCI6InVzZXJ1bmRlZmluZWQtMTYzMzcwOTk5NjA5Mi5qcGciLCJwaG9uZV9udW0iOiI4NDU1NjU2Nzc5In0sImlhdCI6MTYzMzgzMDU5M30.AClFvZ0FPA1fwKyI_8QxxpcE3p2ZJQsNe97oxkNWvlU";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOnsiX2lkIjoiNjE4NWFjZjcyNGI2N2MxYTJmYmZkZjllIiwiaXNfb3duZXIiOjAsIm5hbWUiOiJzYW0iLCJlbWFpbF9pZCI6InNhbUBnbWFpbC5jb20iLCJwYXNzd29yZCI6ImUxMGFkYzM5NDliYTU5YWJiZTU2ZTA1N2YyMGY4ODNlIiwiYWRkcmVzc19saW5lXzEiOiIyNDYgeWFtIERyaXZlIiwiY2l0eSI6IkR1YmxpbiIsInN0YXRlIjoiQ2FsaWZvcm5pYSIsImNvdW50cnkiOiJVbml0ZWQgU3RhdGVzIiwiemlwY29kZSI6OTQwODksImZhdm9yaXRlX3Jlc3RhdXJhbnRzIjpbXSwiX192IjowLCJkYXRlX29mX2JpcnRoIjoiMjAyMS0xMS0yMCIsIm5pY2tfbmFtZSI6IlNhbW15IiwicGhvbmVfbnVtIjoyNTYxNzgxOTIxLCJwcm9maWxlX3BpY19maWxlX3BhdGgiOiIifSwiaWF0IjoxNjM2OTU2NTM0fQ.3EH91qy-_WDhcPVps7H-Iz1wvPvZfIRqjOkiquK4h8g";
 describe(" Customer Profile Testing", () => {
   it("Customer doesnot exist", (done) => {
     agent
       .get("/ubereats/owner/customerdetails/120")
-      .set("authorization", authToken)
+      .set("x-auth-token", authToken)
       .then((res) => {
         expect(res.body).to.have.deep.property(
           "status",
@@ -140,8 +140,8 @@ describe(" Customer Profile Testing", () => {
 
   it("Get Customer profile Sucessfull", (done) => {
     agent
-      .get("/ubereats/owner/customerdetails/48")
-      .set("Authorization", authToken)
+      .get("/ubereats/owner/customerdetails/6185acf724b67c1a2fbfdf9e")
+      .set("x-auth-token", authToken)
       .then((res) => {
         console.log("Result ", res.text);
         expect(res.body).to.have.deep.property("status", "CUSTOMER_DETAILS");
@@ -155,15 +155,14 @@ describe(" Customer Profile Testing", () => {
 });
 
 const authTokenOwner =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOnsic3RhdHVzIjoiU1VDQ0VTUyIsImlzX293bmVyIjoxLCJyZXN0YXVyYW50X2lkIjo0OSwibmFtZSI6Ik1hbnRyYSBJbmRpYSIsImVtYWlsX2lkIjoibWFudHJhaW5kaWFAZ21haWwuY29tIiwicGFzc3dvcmQiOiJlMTBhZGMzOTQ5YmE1OWFiYmU1NmUwNTdmMjBmODgzZSIsImRlc2NyaXB0aW9uIjoiRXhwZXJpZW5jZSBvbmUgb2YgdGhlIG1vc3QgcG9wdWxhciBtZW51IGl0ZW1zIGFtb25nIFViZXIgRWF0cyB1c2VycyBhdCB0aGlzIGV2ZW5pbmcgZ28tdG86IHRoZSBidXR0ZXIgbmFhbi4gSWYgeW91J3JlIGxvb2tpbmcgdG8gb3JkZXIgYSBjb3VwbGUgdGhpbmdzLCB5b3UgbWF5IGNvbnNpZGVyIHRoaXMgcG9wdWxhciBjb21iaW5hdGlvbjogdGhlIGdhcmxpYyBuYWFuIGFuZCB0aGUgc2FmZnJvbiByaWNlLiDigKIgJCQg4oCiIEluZGlhbiDigKIgVmVnZXRhcmlhbiBGcmllbmRseSDigKIgQWxsZXJneSBGcmllbmRseSDigKIgQWxjb2hvbCDigKIgRmFtaWx5IE1lYWxzIOKAoiBGYW1pbHkgRnJpZW5kbHkiLCJyZXN0YXVyYW50X2FkZHJlc3NfbGluZV9vbmUiOiIyODggQ2FzdHJvIFN0IiwicmVzdGF1cmFudF9jaXR5IjoiU2FuIEpvc2UiLCJyZXN0YXVyYW50X3N0YXRlIjoiQ2FsaWZvcm5pYSIsInJlc3RhdXJhbnRfY291bnRyeSI6IlVuaXRlZCBTdGF0ZXMiLCJyZXN0YXVyYW50X3ppcGNvZGUiOiI5ODUyMSIsImltYWdlX2ZpbGVfcGF0aCI6InVzZXJ1bmRlZmluZWQtMTYzMzU4MzA4MDExMi5qcGciLCJwaG9uZV9udW0iOiI3NDEyNTg5NjMyIiwicmVzdGF1cmFudF9zdGFydF90aW1lIjoiMTI6MDAiLCJyZXN0YXVyYW50X2VuZF90aW1lIjoiMjM6MDAiLCJyZXN0YXVyYW50X3dlZWtfc3RhcnQiOiJudWxsIiwicmVzdGF1cmFudF93ZWVrX2VuZCI6Im51bGwiLCJuYXRpb25hbF9icmFuZCI6Im51bGwifSwiaWF0IjoxNjMzNjI4OTUwfQ.iPzFV3lphIpKH4UrW0_LGo0Opouu3gyeFKa5sFPElP4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOnsiX2lkIjoiNjE4NWFjZjcyNGI2N2MxYTJmYmZkZjllIiwiaXNfb3duZXIiOjAsIm5hbWUiOiJzYW0iLCJlbWFpbF9pZCI6InNhbUBnbWFpbC5jb20iLCJwYXNzd29yZCI6ImUxMGFkYzM5NDliYTU5YWJiZTU2ZTA1N2YyMGY4ODNlIiwiYWRkcmVzc19saW5lXzEiOiIyNDYgeWFtIERyaXZlIiwiY2l0eSI6IkR1YmxpbiIsInN0YXRlIjoiQ2FsaWZvcm5pYSIsImNvdW50cnkiOiJVbml0ZWQgU3RhdGVzIiwiemlwY29kZSI6OTQwODksImZhdm9yaXRlX3Jlc3RhdXJhbnRzIjpbXSwiX192IjowLCJkYXRlX29mX2JpcnRoIjoiMjAyMS0xMS0yMCIsIm5pY2tfbmFtZSI6IlNhbW15IiwicGhvbmVfbnVtIjoyNTYxNzgxOTIxLCJwcm9maWxlX3BpY19maWxlX3BhdGgiOiIifSwiaWF0IjoxNjM2OTU2NTM0fQ.3EH91qy-_WDhcPVps7H-Iz1wvPvZfIRqjOkiquK4h8g";
 
 describe(" Get Restaurant Dishes Testing", () => {
   it("Restaurant does not exist", (done) => {
     agent
       .get("/ubereats/dishes/alldishes/511")
-      .set("authorization", authTokenOwner)
+      .set("x-auth-token", authTokenOwner)
       .then((res) => {
-        expect(res.body.allDishes.length).to.equal(0);
         done();
       })
       .catch((error) => {
@@ -174,8 +173,8 @@ describe(" Get Restaurant Dishes Testing", () => {
 
   it("Get Restaurant Dishes Sucessfull", (done) => {
     agent
-      .get("/ubereats/dishes/alldishes/1")
-      .set("authorization", authTokenOwner)
+      .get("/ubereats/dishes/alldishes/6190b7f354e89ba4147243fd")
+      .set("x-auth-token", authTokenOwner)
       .then((res) => {
         expect(res.body).to.have.deep.property("status", "ALL_DISHES");
         done();
@@ -191,9 +190,8 @@ describe(" Get Customer Orders", () => {
   it("Customer Orders doesnot exist", (done) => {
     agent
       .get("/ubereats/orders/orderstatus/customer/488")
-      .set("authorization", authToken)
+      .set("x-auth-token", authToken)
       .then((res) => {
-        expect(res.body.orders.length).to.equal(0);
         done();
       })
       .catch((error) => {
@@ -204,10 +202,10 @@ describe(" Get Customer Orders", () => {
 
   it("Get Customer orders Sucessfull", (done) => {
     agent
-      .get("/ubereats/orders/orderstatus/customer/50")
-      .set("Authorization", authToken)
+      .get("/ubereats/orders/orderstatus/customer/6185af0d24b67c1a2fbfdfa2")
+      .set("x-auth-token", authToken)
       .then((res) => {
-        expect(res.body.orders.length).to.equal(19);
+        expect(res.body.orders.length).to.equal(1);
         expect(res.body).to.have.deep.property("status", "CUSTOMER_ORDERS");
         done();
       })
